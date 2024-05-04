@@ -6,3 +6,11 @@ body {
     background-size: 100%;
     font-family: 'Ubuntu';
 }
+
+.container {
+    margin-left: 30%;
+    margin-right: 25%;
+    margin-top: 50px;
+    min-width: 400px;
+    width: auto;
+}
