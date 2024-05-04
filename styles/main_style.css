@@ -13,4 +13,5 @@ body {
     margin-top: 50px;
     min-width: 400px;
     width: auto;
+    border-start-end-radius: calc();
 }
