@@ -1,17 +1,49 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: rgb(244, 245, 245);
+    background-image: url("../img/background8.svg");
     background-position: center;
     background-size: 100%;
     font-family: 'Ubuntu';
+    width: auto;
 }
 
 .container {
-    margin-left: 30%;
+    margin-left: 25%;
     margin-right: 25%;
     margin-top: 50px;
     min-width: 400px;
     width: auto;
-    border-start-end-radius: calc();
+   /*  border: 5px solid red; */
+}
+
+.column_background_main {
+    flex: 1;
+    padding: 20px;
+    background-color: #31363F;
+    
+    margin: 0 -150px;
+    border-radius: 10px;
+    z-index: -1;
+    background: rgba(204, 204, 204, 0.144);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+    backdrop-filter: blur( 3.5px );
+    -webkit-backdrop-filter: blur( 3.5px );
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18 );
+    /* border: 5px solid red; */
+}
+
+
+
+.text {
+    background-color: #333333;
+    color: #f8eded;
+    padding: 20px;
+    margin-top: 50px;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-bottom: 60px;
+    min-width: 100px;
+    /* border: 5px solid red; */
 }
