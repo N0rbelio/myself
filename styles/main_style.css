@@ -12,7 +12,7 @@ body {
     margin-left: 25%;
     margin-right: 25%;
     margin-top: 50px;
-    min-width: 400px;
+    min-width: 300px;
     width: auto;
    /*  border: 5px solid red; */
 }
@@ -40,10 +40,37 @@ body {
     background-color: #333333;
     color: #f8eded;
     padding: 20px;
-    margin-top: 50px;
+    margin-top: 250px;
     margin-right: 20px;
     margin-left: 20px;
     margin-bottom: 60px;
     min-width: 100px;
     /* border: 5px solid red; */
+}
+
+.space80 {
+    margin-left: 80px;
+}
+
+
+
+
+/* phones size */
+@media screen and (max-width: 883px) {
+    .container {
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .column_background_main {
+        margin: 0;
+    }
+
+    .text {
+        margin-top: 20px;
+        margin-right: 10px;
+        margin-left: 10px;
+        margin-bottom: 30px;
+    }
+
 }

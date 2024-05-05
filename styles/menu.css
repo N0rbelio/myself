@@ -9,7 +9,7 @@
 
 .menu-bar {  
     border-radius: 0px;
-    background: rgba(255, 255, 255, 0.185);
+    background: rgba(0, 0, 0, .4);
     box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
     backdrop-filter: blur( 9.5px );
     -webkit-backdrop-filter: blur( 9.5px );
@@ -20,6 +20,7 @@
     transition: top 0.3s ease-in-out, padding 0.3s ease-in-out; 
     text-align: center;
     padding: 15px;
+    line-height: 2.3;
 }
 
 .menu-bar a {
@@ -31,11 +32,12 @@
     position: relative;
     cursor: pointer;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .menu-bar a::before {
     content: " ";
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     height: 100%;
@@ -45,37 +47,66 @@
     border-radius: 25px;
 }
 
-.menu-bar a:hover {
-    color: rgb(171, 75, 235);
-    text-decoration: none;
+.menu-bar a:hover::before {
+    background: linear-gradient(to bottom, #c6edff, #d2d1d3);
+    box-shadow: 0px 10px 20px 0px black;
+    transform: scale(1.2);
 }
 
-.menu-bar a:hover::before {
-    background: linear-gradient(to bottom, #e8edec, #d2d1d3);
-    box-shadow: 0px 3px 20px 0px black;
+.selected {
+    border-radius: 25px;
+    background: linear-gradient(to bottom, #45a5d1, #d2d1d3);
+    box-shadow: 0px 10px 20px 0px black;
     transform: scale(1.2);
 }
 
 
+.menu-bar a:hover {
+    color: black;
+}
 
+/* 
+.icon{
+    position: absolute;
+    width: 90px;
+    margin-bottom: -90px;
+    margin-top: -25px;
+    margin-left: -15%;
 
+}
+ */
 
-    
-/* all good no puss change */
 .content {
-    margin-top: 60px; /* To prevent content from hiding behind the nav */
+    margin-top: 60px;
     padding: 20px;
   }
 
 .menu-bar.hidden {
-    top: 0; /* Show the nav without the gap */
+    top: 0; 
     margin: 0px;
   }
 
 .menu-bar.full {
-    padding: 25px; /* Full padding when fully visible */
+    padding: 15px; 
     margin: 0px;
-    left: 10%;
-    right: 10%;
+    left: 20%;
+    right: 20%;
     border-radius: 25px;
   }
+
+
+/* phones size */
+@media screen and (max-width: 768px) {
+    .menu-bar {
+        top: 0;
+        left: 0;
+        right: 0;
+        border-radius: 0px;
+    }
+
+    .menu-bar.full {
+        padding: 15px;
+        margin: 0;
+        border-radius: 25px;
+    }
+}
