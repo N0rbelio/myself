@@ -1,26 +1,63 @@
-<html lang="pt-pt">
+<!DOCTYPE html>
+<html lang="pt-PT">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>fruzanadas</title>
 
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
         <!-- styles -->
         <link rel="stylesheet" href="styles/main_style.css">
-        <link rel="stylesheet" href="styles/menu.css">
-        <!-- <link rel="stylesheet" href="styles/menu copy.scss"> -->
-
+        <link rel="stylesheet" href="styles/nav.css"> 
+    
     </head>
 
-    <body>
-    
-        <ul class="menu-bar" id="navbar">
-            <a href="index.html" class="selected">Home</a>
-            <a href="projetos.html">Projetos</a>
-            <a href="musica.html">Música</li</a>
-            <a href="in_dev.html">In Dev</a>
-        </ul>
-
+    <body> 
+        <div class="sidebar">
+            <div class="logo-details">
+                <div class="logo_name">Olá, sou o André </div>
+                <i class='bx bx-menu' id="btn" ></i>
+            </div>
+            <ul class="nav-list"> 
+                <li>
+                    <a class="fruzanitas_active">
+                        <i class='bx bxs-user ' ></i>
+                        <span class="links_name ">Home</span>
+                    </a>
+                    <span class="tooltip">Home </span>
+                </li>
+                <li>
+                    <a href="projetos.html">
+                    <i class='bx bx-archive'></i>
+                    <span class="links_name">Projetos</span>
+                    </a>
+                    <ul class="submenu">
+                        <li><a href="#" >Pirsi </a></li>
+                        <li><a href="#">IMPA API</a></li>
+                        <li><a href="#">Shell Script</a></li>
+                    </ul>
+                </li>  
+                <li>
+                    <a href="music.html" >
+                    <i class='bx bx-music'></i>
+                    <span class="links_name ">Music</span>
+                    </a>
+                    <span class="tooltip">Music </span>
+                </li>
+                <li>
+                    <a href="in_dev.html">
+                        <i class='bx bx-wrench'></i>
+                        <span class="links_name">In Development</span>
+                    </a>
+                    <span class="tooltip">In Development</span>
+                </li>
+            </ul>
+        </div>
         <div class="container">        
 
             <div class="text">

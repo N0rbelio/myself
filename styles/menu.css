@@ -95,18 +95,3 @@
   }
 
 
-/* phones size */
-@media screen and (max-width: 768px) {
-    .menu-bar {
-        top: 0;
-        left: 0;
-        right: 0;
-        border-radius: 0px;
-    }
-
-    .menu-bar.full {
-        padding: 15px;
-        margin: 0;
-        border-radius: 25px;
-    }
-}
