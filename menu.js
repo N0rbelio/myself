@@ -19,19 +19,20 @@
 
 
   /* nav bar scripting */
-  let sidebar = document.querySelector(".sidebar");
-  let closeBtn = document.querySelector("#btn");
-  let scrollTopBtn = document.querySelector("#scroll_top"); 
-  closeBtn.addEventListener("click", ()=> { /* close event  */ 
-      sidebar.classList.toggle("open");   
-      menuBtnChange();/* alterar btn */
-      });
+let sidebar = document.querySelector(".sidebar");
+let closeBtn = document.querySelector("#btn");
+let scrollTopBtn = document.querySelector("#scroll_top"); 
+closeBtn.addEventListener("click", ()=> { /* close event  */ 
+    sidebar.classList.toggle("open");   
+    menuBtnChange();/* alterar btn */
+    });
 
-  function menuBtnChange() {
-      if(sidebar.classList.contains("open")) {         /* validar se esta aberto ou n  */
-          closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
-      }
-      else {  
-          closeBtn.classList.replace("bx-menu-alt-right","bx-menu"); 
-      }
-  }
+function menuBtnChange() {
+    if(sidebar.classList.contains("open")) {         /* validar se esta aberto ou n  */
+        closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+    }
+    else {  
+        closeBtn.classList.replace("bx-menu-alt-right","bx-menu"); 
+    }
+}
+

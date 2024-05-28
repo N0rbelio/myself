@@ -9,12 +9,12 @@ body {
 }
 
 .container {
-    margin-left: 25%;
-    margin-right: 25%;
+    margin-left: 18%;
+    margin-right: 18%;
     margin-top: 50px;
     min-width: 300px;
     width: auto;
-   /*  border: 5px solid red; */
+/*     border: 5px solid red;*/
 }
 
 .column_background_main {
@@ -48,10 +48,13 @@ body {
     /* border: 5px solid red; */
 }
 
-.space80 {
-    margin-left: 80px;
+.space40 {
+    margin-top: 40px;
 }
 
+.space80 {
+    margin-top: 80px;
+}
 
 
 

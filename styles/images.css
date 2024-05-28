@@ -1,0 +1,17 @@
+.image-container {
+    float: right;
+    margin-top: 0px;
+    margin-right: 90px;
+    width: 340px;
+    filter: drop-shadow(40px 20px 40px #ca1aff91);
+    border-radius: 10px; 
+    padding: 50px;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;   
+}
+
