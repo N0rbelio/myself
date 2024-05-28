@@ -15,3 +15,12 @@
     border-radius: 10px;   
 }
 
+@media screen and (max-width: 883px) {
+    .image-container {
+        margin-left: 10%;
+        margin-right: 10%;
+        max-width: 100%;
+        filter: drop-shadow(40px 20px 40px #ca1aff91);
+        border-radius: 10px; 
+    }
+}
