@@ -96,6 +96,34 @@
   pointer-events: none;
   transition: 0s;
 }
+/* .sidebar li .tooltip_submenu{
+  position: absolute;
+  top: -20px;
+  left: calc(100% + 15px);
+  z-index: 3;
+  background: #ffffff93;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 400;
+  opacity: 0;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: 0s;
+
+}
+
+.sidebar li:hover .tooltip_submenu{
+  opacity: 1;
+  pointer-events: auto;
+  transition: all 0.4s ease;
+  top: 50%;
+  transform: translateY(-50%);
+} */
+
+
+
 .sidebar li:hover .tooltip{
   opacity: 1;
   pointer-events: auto;
@@ -136,6 +164,7 @@
   opacity: 1;
   pointer-events: auto;
 }
+
 .sidebar li a:hover .links_name,
 .sidebar li a:hover i{
   transition: all 0.5s ease;
@@ -173,6 +202,7 @@
   border-radius: 6px;
   margin-right: 10px;
 }
+
 .sidebar li.profile .name,
 .sidebar li.profile .job{
   font-size: 15px;
@@ -180,6 +210,7 @@
   color: #fff;
   white-space: nowrap;
 }
+
 .sidebar li.profile .job{
   font-size: 12px;
 }
@@ -212,8 +243,6 @@
     display: none;
   }
 }
-
-
 
 .fruzanitas_active{
   animation: lines 1s linear infinite alternate;
@@ -251,21 +280,22 @@
   z-index: -1;
 } */
 
-/* 
- add to top see what changes  */
- .sidebar li .submenu {
+
+.sidebar li .submenu {
   position: absolute;
-  top: 0;
+  top: 0px; 
   left: 100%;
-  margin-left: -5px;
+  padding-top: 45px;
+  margin-left: 0px;
   min-width: 120px;
   border-radius: 0 6px 6px 0;
   padding-left: 10px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition: opacity 0.4s ease, transform 0.4s ease, top 0.4s ease;
   transform: translateX(-20%);
-  z-index: -1;
+  z-index: -2;
+/*   border: 5px solid #ac4a4a;  */
 }
 
 .sidebar li:hover .submenu {
@@ -276,7 +306,10 @@
   z-index: 1;
 }
 
-
+.sidebar.open li .submenu {
+  top: 0px; 
+  padding-top: 0px; 
+}
 
 .sidebar li .submenu li {
   list-style: none;
@@ -297,4 +330,20 @@
 
 .sidebar li .submenu li a:hover {
   background-color: #555;
+}
+
+
+.language-flags {
+  position: absolute;
+  bottom: 15px;
+  left: 25px;
+}
+
+.language-flags a {
+  display: block;
+  margin-bottom: 5px; /* Adds space between the flags */
+}
+
+.img-flags {
+  width: 20px;
 }

@@ -22,6 +22,7 @@
 let sidebar = document.querySelector(".sidebar");
 let closeBtn = document.querySelector("#btn");
 let scrollTopBtn = document.querySelector("#scroll_top"); 
+
 closeBtn.addEventListener("click", ()=> { /* close event  */ 
     sidebar.classList.toggle("open");   
     menuBtnChange();/* alterar btn */
