@@ -341,9 +341,9 @@
 
 .language-flags a {
   display: block;
-  margin-bottom: 5px; /* Adds space between the flags */
+  margin-bottom: 5px;
 }
 
 .img-flags {
-  width: 20px;
+  width: 25px;
 }

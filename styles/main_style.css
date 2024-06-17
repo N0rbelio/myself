@@ -78,8 +78,8 @@ header {
 /* phones size */
 @media screen and (max-width: 883px) {
     .container {
-        margin-left: 5%;
-        margin-right: 5%;
+        margin-left: 0%;
+        margin-right: 0%;
     }
 
     .column_background_main {

@@ -16,6 +16,13 @@
         <link rel="stylesheet" href="../styles/nav.css"> 
         <link rel="stylesheet" href="../styles/images.css"> 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
+
+        <!-- Highlight.js JavaScript -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+        
         
     </head>
 
@@ -27,21 +34,23 @@
             </div>
             <ul class="nav-list"> 
                 <li>
-                    <a class="fruzanitas_active">
+                    <a href="../index.html">
                         <i class='bx bxs-user ' ></i>
                         <span class="links_name ">Home</span>
                     </a>
                     <span class="tooltip">Home </span>
                 </li>
                 <li>
-                    <a href="projetos.html">
+                    <a class="fruzanitas_active">
                     <i class='bx bx-archive'></i>
+                    
                     <span class="links_name">Projetos Universidade</span>
                     </a>
+                </a>
                     <span class="tooltip">Projetos Uni </span>
                     <ul class="submenu">
-                        <li><a href="/projs_uni/" >Pirsi </a></li>
-                        <li><a href="/projs_uni/ipma_proj.html">IMPA API</a></li>
+                        <li><a href="/" >Pirsi </a></li>
+                        <li><a href="#">IMPA API</a></li>
                         <li><a href="#">Shell Script</a></li>
                     </ul>
                 </li>  
@@ -52,15 +61,15 @@
                     </a>
                     <span class="tooltip">Projetos Pessoais</span>
                     <ul class="submenu">
-                        <li><a href="/">Cenas</a></li>
+                        <li><a href="#">Cenas</a></li>
                         <li><a href="#">coisas</a></li>
                         <li><a href="#">Scripts</a></li> 
                     </ul>
                 </li> 
             </ul>
             <div class="language-flags">
-                <a href="#" onclick="changeLanguage('en')">
-                    <img class="img-flags" src="img/us.png" alt="English Flag">
+                <a href="/en/projs_uni/ipma_proj.html" onclick="changeLanguage('en')">
+                    <img class="img-flags" src="/img/us.png" alt="English Flag">
                 </a>
 <!--                 <a href="#" onclick="changeLanguage('pt')">
                     <img class="img-flags" src="img/pt.png" alt="Portuguese Flag">
@@ -70,32 +79,48 @@
         <div class="container">        
 
             <div class="text">
-                <div class="image-container">
-                    <img src="img/main_profile_pic.png" alt="fogo de prefil">
-                </div>
-                <br class="space40">
-                <h3>Olá, chamo-me André Oliveira e tenho 25 anos.</h3>
-                <br>
-                <p>Terminei o meu CTeSP em Redes e Sistemas Informáticos, em 01/2024.</p>
-                <br class="space40">
-                <p>Ao longo destes 2 anos, estive envolvido nos mais diversos projetos curriculares e pessoais onde pude aplicar os meus conhecimentos em prática, bem como desafiar-me a mim mesmo para obter mais conhecimento.</p>
-                <br>
-                <p>Ao longo destes 2 anos, estive envolvido nos mais diversos projetos curriculares e pessoais, onde pude colocar os meus conhecimentos em prática bem como ter o meu próprio HomeLab / HomeServer.  </p>
-                <br>
-                <p>Neste meu About me vou mostrar alguns dos diversos projetos que realizei durante o meu CTeSP, bem como projetos pessoais uns terminados outros em fase de desenvolvimento, que servem não só por hobby mas tambem para puder aprender novas technologias.</p>    
-                <br class="space40">
+
+  
+                
+                
+                <pre><code class="language-python">matriz = []    
+# Leitura da matriz
+for i in range(5):
+    linha = []
+    for j in range(5):
+        elemento = float(input(f"Insira o elemento M[{i+1}][{j+1}]: "))
+        linha.append(elemento)
+    matriz.append(linha)
+
+# Cálculo do maior elemento de cada linha
+maiores_elementos_linha = [max(linha) for linha in matriz]
+
+# Cálculo da média dos elementos de cada coluna
+medias_coluna = [sum(coluna) / 5 for coluna in zip(*matriz)]
+
+# Exibição dos resultados
+print("\nMaior elemento de cada linha:")
+for i, maior_elemento in enumerate(maiores_elementos_linha, start=1):
+    print(f"Na linha {i}: {maior_elemento}")
+
+print("\nMédia dos elementos de cada coluna:")
+for j, media_coluna in enumerate(medias_coluna, start=1):
+    print(f"Na coluna {j}: {media_coluna:.2f}")
+</code></pre>
+                    
             </div>
             
         </div>
-            <script >
-                function changeLanguage(lang) {
-                    if (lang === 'en') {
-                        window.location.href = 'en/index.html';
-                    } else if (lang === 'pt') {
-                        window.location.href = '../index.html';
-                    }
+        
+        <script >
+            function changeLanguage(lang) {
+                if (lang === 'en') {
+                    window.location.href = 'en/projs_uni/ipma_proj.html';
+                } else if (lang === 'pt') {
+                    window.location.href = '../projs_uni/ipma_proj.html';
                 }
-            </script>
-            <script src="menu.js"></script>
+            }
+        </script>
+        <script src="/menu.js"></script>
     </body>
 </html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>About Me</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+        <!-- styles -->
+        <link rel="stylesheet" href="../../styles/main_style.css">
+        <link rel="stylesheet" href="../../styles/nav.css"> 
+        <link rel="stylesheet" href="../../styles/images.css"> 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+
+
+        <!-- Highlight.js JavaScript -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <script>hljs.highlightAll();</script>
+        
+        
+    </head>
+
+    <body> 
+        <div class="sidebar">
+            <div class="logo-details">
+                <div class="logo_name">Olá, sou o André </div>
+                <i class='bx bx-menu' id="btn" ></i>
+            </div>
+            <ul class="nav-list"> 
+                <li>
+                    <a href="../index.html">
+                        <i class='bx bxs-user ' ></i>
+                        <span class="links_name ">Home</span>
+                    </a>
+                    <span class="tooltip">Home </span>
+                </li>
+                <li>
+                    <a class="fruzanitas_active">
+                    <i class='bx bx-archive'></i>
+                    
+                    <span class="links_name">Projetos Universidade</span>
+                    </a>
+                </a>
+                    <span class="tooltip">Projetos Uni </span>
+                    <ul class="submenu">
+                        <li><a href="/" >Pirsi </a></li>
+                        <li><a href="#">IMPA API</a></li>
+                        <li><a href="#">Shell Script</a></li>
+                    </ul>
+                </li>  
+                <li>
+                    <a href="projetos.html">
+                    <i class='bx bx-server'></i>
+                    <span class="links_name">Projetos Pessoais </span>
+                    </a>
+                    <span class="tooltip">Projetos Pessoais</span>
+                    <ul class="submenu">
+                        <li><a href="#">Cenas</a></li>
+                        <li><a href="#">coisas</a></li>
+                        <li><a href="#">Scripts</a></li> 
+                    </ul>
+                </li> 
+            </ul>
+            <div class="language-flags">
+                <a href="/projs_uni/ipma_proj.html" onclick="changeLanguage('en')">
+                    <img class="img-flags" src="/img/pt.png" alt="English Flag">
+                </a>
+<!--                 <a href="#" onclick="changeLanguage('pt')">
+                    <img class="img-flags" src="img/pt.png" alt="Portuguese Flag">
+                </a> -->
+            </div>
+        </div>
+        <div class="container">        
+
+            <div class="text">
+
+
+                <pre><code class="language-bash">
+
+#!/bin/bash
+root_folder=$(dirname "$5") #guarda a raiz da pasta
+filename=.protecao #define a localizaçao dos ficheiros
+filename2=.protecao2 #define a localizaçao dos ficheiros
+
+####################################################################################################
+#
+#     correr o file no caso -p sendo /home/(user)/Desktop/(folder)
+#     guardar em outra folder -p sendo /home/(user)/Desktop/(folder) /home/root/save_folder/
+#     correr o file no caso -v .protecao .portecao2
+#
+####################################################################################################
+
+
+if [ $# -eq 0 ]
+then
+        echo "Invalid switch $1
+        Uso: ./vigia_pirata.sh [{-p <diretoria[<diretoria>] | -c}] [-f <ficheiro>]
+            $(tput setaf 2)-p $(tput setaf 1): $(tput setaf 7)Protege e guarda informação acerca de uma ou mais diretorias
+            $(tput setaf 3)-v $(tput setaf 1): $(tput setaf 7)Verifica alterações em ficheiros desde que foram protegidos
+            $(tput setaf 6)-f $(tput setaf 1): $(tput setaf 7)Indicação do nome do ficheiro onde a base de dados será guardada
+
+            (Por defeito será /home/n0rbelio/Desktop/proj_SO/.protecao)
+
+            "
+fi
+
+#menu de incialização
+if [ $# -eq 1 ]
+then
+    echo "Invalid switch $1
+        Uso: ./vigia_pirata.sh [{-p <diretoria[<diretoria>] | -c}] [-f <ficheiro>]
+            $(tput setaf 2)-p $(tput setaf 1): $(tput setaf 7)Protege e guarda informação acerca de uma ou mais diretorias
+            $(tput setaf 3)-v $(tput setaf 1): $(tput setaf 7)Verifica alterações em ficheiros desde que foram protegidos
+            $(tput setaf 6)-f $(tput setaf 1): $(tput setaf 7)Indicação do nome do ficheiro onde a base de dados será guardada
+
+            (Por defeito será /home/n0rbelio/Desktop/proj_SO/.protecao)
+
+            "
+exit 2
+
+
+
+else
+    while getopts "p:v:f" OPTION #vai obter a opão escolhida
+    do
+    case $OPTION in # qual seja a opçao escolhida pelo utilizaodr vai ser processada aqui
+
+        p)
+            if [ -d $3 ];
+            then
+                touch $3/.protecao
+                ls $2 -lr -A > $2.protecao #define que a pasta predefenida será esta
+                echo ""
+                echo " $(tput setaf 2)≡ $(tput setaf 7)Base de dados de proteção $3/.protecao criada"
+                echo ""
+                exit 0
+                elif [ -n $3 ]; #caso o utilizador tenha escolhido uma localizaçao vai ser criada aqui
+            then
+                touch $4.protecao #cria o ficheiro protecao onde vai ter toda a descriçao dos fichieros e pastas no diretorio escolhido
+                ls $2 -lr -A > $4
+                echo ""
+                echo " $(tput setaf 2)≡ $(tput setaf 7)Base de dados de proteção$4 criada"
+                echo ""
+            else
+                echo ""
+                echo " $(tput setaf 1)× $(tput setaf 7)Erro em criar a base de dados"
+                echo ""
+            fi
+            ;;
+
+
+        v)
+        if [ -e "$file2" ]; #vai verificar se o ficheiro 2 existe se sim
+            then
+                diff -y .protecao .protecao2 #vai comparar a protecao com a proteçao 2
+                echo ""
+                echo "$(tput setaf 2) ≡ $(tput bold)Made by $(tput setaf 7)$(tput blink)Andre"$(tput sgr0)
+                echo ""
+                tar -czvf vigia_recurso $root_folder |sha256sum > .protegido.sha #vai fazer um checksum do zip vai gerar um value de 256 bits e vai ver se algum file dentro do zip foi alterado
+                cp .protecao .protecao2 #vai copiar tudo o que tiver dentro da proteçao e enviar para a proteçao 2
+            else
+                echo ""
+                echo " $(tput setaf 1)× $(tput setaf 7)Não tenho ficheiro para comparar"
+                echo ""
+                touch .protecao2 #vai criar o filheiro proteçao 2
+                cp .protecao .protecao2 #vai copiar tudo o que tiver dentro da proteçao e enviar para a proteçao 2
+                echo ""
+                echo "$(tput setaf 1)PORFAVOR! $(tput setaf 7)corre o $(tput setaf 4)-p $(tput setaf 7)de novo para procurar atualizções no diretorio."
+                echo "$(tput setaf 2):D $(tput setaf 7)Obrigado, Bom fim de semana!"
+                echo ""
+        fi
+        ;;
+
+        ?)
+            exit 0
+        ;;
+    esac
+    done
+fi
+
+
+
+
+</code></pre>
+
+            </div>
+            
+        </div>
+        
+        <script >
+            function changeLanguage(lang) {
+                if (lang === 'en') {
+                    window.location.href = 'en/projs_uni/ipma_proj.html';
+                } else if (lang === 'pt') {
+                    window.location.href = '../projs_uni/ipma_proj.html';
+                }
+            }
+        </script>
+        <script src="/menu.js"></script>
+    </body>
+</html>
