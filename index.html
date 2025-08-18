@@ -4,8 +4,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>About Me</title>
+        <title>André Oliveira Page</title>
 
+        <!-- import styles -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
@@ -13,60 +14,57 @@
 
         <!-- styles -->
         <link rel="stylesheet" href="styles/main_style.css">
-        <link rel="stylesheet" href="styles/nav.css"> 
-        <link rel="stylesheet" href="styles/images.css"> 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+        <link rel="stylesheet" href="styles/images.css">
+        <link rel="stylesheet" href="styles/root.css">
+        <link rel="stylesheet" href="styles/nav.css">
         
     </head>
 
     <body> 
-        <div class="sidebar">
-            <div class="logo-details">
-                <div class="logo_name">Olá, sou o André </div>
-                <i class='bx bx-menu' id="btn" ></i>
-            </div>
-            <ul class="nav-list"> 
-                <li>
-                    <a class="fruzanitas_active">
-                        <i class='bx bxs-user ' ></i>
-                        <span class="links_name ">Home</span>
-                    </a>
-                    <span class="tooltip">Home </span>
+        <nav aria-label="Main navigation">
+            <button class="hamburger" aria-label="Toggle menu" aria-controls="menu" aria-expanded="false">
+                <span class="line-1"></span>
+                <span class="line-2"></span>
+                <span class="line-3"></span>
+            </button>
+
+            <ul class="nav-links" id="menu">
+                <li><a href="#">Home</a></li>
+                <li class="has-submenu">
+                    <a href="#" aria-expanded="false">Projetos Universidade</a>
+                    <ul class="submenu">
+                        <li><a href="projs_uni/pirsi.html">PIRSI</a></li>
+                        <li><a href="projs_uni/ipma_proj.html">IPMA API</a></li>
+                        <li><a href="projs_uni/shell-script.html">Shell Script</a></li>
+                    </ul>
                 </li>
-                <li>
-                    <a href="projetos.html">
-                    <i class='bx bx-archive'></i>
-                    <span class="links_name">Projetos Universidade</span>
-                    </a>
-                    <span class="tooltip">Projetos Uni </span>
+
+                <li class="has-submenu">
+                    <a href="#" aria-expanded="false">Projetos Pessoais</a>
                     <ul class="submenu">
-                        <li><a href="/projs_uni/" >Pirsi </a></li>
-                        <li><a href="projs_uni/ipma_proj.html">IMPA API</a></li>
-                        <li><a href="#">Shell Script</a></li>
+                        <li><a href="projs_pessoal/script.html">Scripts</a></li>
+                        <li><a href="projs_pessoal/homelab.html">HomeLab</a></li>
+                        <li><a href="projs_pessoal/diy-router.html">DIY Router</a></li>
                     </ul>
-                </li>  
-                <li>
-                    <a href="projetos.html">
-                    <i class='bx bx-server'></i>
-                    <span class="links_name">Projetos Pessoais </span>
-                    </a>
-                    <span class="tooltip">Projetos Pessoais</span>
+                </li>
+
+                <li class="has-submenu">
+                    <a href="#" aria-expanded="false">Projetos Trabalho</a>
                     <ul class="submenu">
-                        <li><a href="/">Cenas</a></li>
-                        <li><a href="#">coisas</a></li>
-                        <li><a href="#">Scripts</a></li> 
+                        <li><a href="projs_trabalho/script-activex.html">Script ActiveX</a></li>
+                        <li><a href="projs_trabalho/assinatura-email.html">Assinaturas de Email</a></li>
                     </ul>
-                </li> 
+                </li>
             </ul>
-            <div class="language-flags">
-                <a href="#" onclick="changeLanguage('en')">
-                    <img class="img-flags" src="img/us.png" alt="English Flag">
-                </a>
-<!--                 <a href="#" onclick="changeLanguage('pt')">
-                    <img class="img-flags" src="img/pt.png" alt="Portuguese Flag">
-                </a> -->
+
+            <div class="language">
+                <select id="lang-select">
+                    <option value="en">🇺🇸 English</option>
+                    <option value="pt" selected>🇵🇹 Português</option>
+                </select>
             </div>
-        </div>
+        </nav>
+
         <div class="container">        
 
             <div class="text">
@@ -74,28 +72,18 @@
                     <img src="img/main_profile_pic.png" alt="fogo de prefil">
                 </div>
                 <br class="space40">
-                <h3>Olá, chamo-me André Oliveira e tenho 25 anos.</h3>
+                <h3 id="age">Olá, chamo-me André Oliveira e tenho ... anos.</h3>
                 <br>
-                <p>Terminei o meu CTeSP em Redes e Sistemas Informáticos, em 01/2024.</p>
+                <p>Concluí o meu <strong>CTeSP em Redes e Sistemas Informáticos</strong> em janeiro de 2024.</p>
                 <br class="space40">
-                <p>Ao longo destes 2 anos, estive envolvido nos mais diversos projetos curriculares e pessoais onde pude aplicar os meus conhecimentos em prática, bem como desafiar-me a mim mesmo para obter mais conhecimento.</p>
+                <p>Durante dois anos estive envolvido em diversos projetos académicos e pessoais, onde pude aplicar os meus conhecimentos e ao mesmo tempo desafiar-me a aprender mais. Um exemplo disso foi a criação do meu próprio <strong>HomeLab</strong>.</p>
                 <br>
-                <p>Ao longo destes 2 anos, estive envolvido nos mais diversos projetos curriculares e pessoais, onde pude colocar os meus conhecimentos em prática bem como ter o meu próprio HomeLab / HomeServer.  </p>
-                <br>
-                <p>Neste meu About me vou mostrar alguns dos diversos projetos que realizei durante o meu CTeSP, bem como projetos pessoais uns terminados outros em fase de desenvolvimento, que servem não só por hobby mas tambem para puder aprender novas technologias.</p>    
+                <p>Neste site partilho alguns dos projetos que realizei no âmbito académico e pessoal (alguns concluídos, outros em desenvolvimento). Estes projetos nasceram como hobby, mas serviram também para explorar novas tecnologias e reforçar competências práticas. Incluo ainda alguns trabalhos desenvolvidos na minha experiência profissional em IT.</p>    
                 <br class="space40">
             </div>
-            
         </div>
-            <script >
-                function changeLanguage(lang) {
-                    if (lang === 'en') {
-                        window.location.href = 'en/index.html';
-                    } else if (lang === 'pt') {
-                        window.location.href = '../index.html';
-                    }
-                }
-            </script>
-            <script src="menu.js"></script>
+            
+        <script src="/age_calc.js"></script>
+        <script src="/nav_menus.js"></script>
     </body>
 </html>

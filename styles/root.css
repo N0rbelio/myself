@@ -1,0 +1,24 @@
+:root {
+    --nav-h: 64px;
+    --bg: #222;
+    --bg-2: #333;
+    --bg-3: #444;
+    --fg: #fff;
+}
+
+* { 
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0; 
+    font-family: "Ubuntu", sans-serif;
+}
+
+body {
+    font-family: "Ubuntu", sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("../img/background8.svg");
+    background-position: center;
+    background-size: 100%;
+    width: auto;
+}
