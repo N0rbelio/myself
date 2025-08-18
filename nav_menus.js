@@ -54,6 +54,6 @@ langSelect.addEventListener('change', () => {
     if (selected === 'en') {
     window.location.href = 'en/index.html'; 
     } else if (selected === 'pt') {
-    window.location.href = '/index.html'; 
+    window.location.href = '../index.html'; 
     }
 });
