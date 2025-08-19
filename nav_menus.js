@@ -49,33 +49,54 @@ document.addEventListener('click', (e) => {
 // Lang select switch
 const langSelect = document.getElementById('lang-select');
 
+// Detect base path (e.g. "/myself" for GitHub Pages repo)
+const basePath = window.location.pathname.split('/')[1]
+  ? `/${window.location.pathname.split('/')[1]}`
+  : '';
+
+// 🔹 Auto-select based on current URL
 (function setLangFromURL() {
   const currentPath = window.location.pathname;
-  if (currentPath.startsWith('/en/')) {
+  if (currentPath.startsWith(`${basePath}/en/`)) {
     langSelect.value = 'en';
   } else {
     langSelect.value = 'pt';
   }
-});
+})();
 
+// 🔹 Change event handler
 langSelect.addEventListener('change', () => {
   const selected = langSelect.value;
-  const currentPath = window.location.pathname;
+  const currentPath = window.location.pathname; // e.g. /myself/ or /myself/en/projects.html
 
   if (selected === 'en') {
-    if (!currentPath.startsWith('/en/')) {
-      if (currentPath === '/' || currentPath === '/index.html') {
-        window.location.pathname = '/en/index.html';
+    if (!currentPath.startsWith(`${basePath}/en/`)) {
+      // Handle root and index
+      if (
+        currentPath === `${basePath}/` ||
+        currentPath === `${basePath}/index.html`
+      ) {
+        window.location.pathname = `${basePath}/en/index.html`;
       } else {
-        window.location.pathname = '/en' + currentPath;
+        window.location.pathname =
+          `${basePath}/en` + currentPath.replace(basePath, '');
       }
     }
   } else if (selected === 'pt') {
-    if (currentPath.startsWith('/en/')) {
-      const newPath = currentPath.replace(/^\/en/, '') || '/index.html';
-      window.location.pathname = newPath;
+    if (currentPath.startsWith(`${basePath}/en/`)) {
+      // Remove /en from path
+      let newPath = currentPath.replace(`${basePath}/en`, basePath);
+
+      // If it ends with / (like /myself/), stay there
+      if (newPath === `${basePath}/`) {
+        window.location.pathname = newPath;
+      } else {
+        window.location.pathname = newPath || `${basePath}/index.html`;
+      }
     } else {
+      // Already in PT root → stay
       window.location.pathname = currentPath;
     }
   }
 });
+
