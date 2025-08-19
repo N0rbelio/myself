@@ -77,17 +77,115 @@
 
             <div class="text">
 
-  
-                
-                
-                <pre><code class="language-python">matriz = []    
+                <pre>
+                    <code class="language-bash">
 
-</code></pre>
-                    
-            </div>
+                        #!/bin/bash
+                        root_folder=$(dirname "$5") #guarda a raiz da pasta
+                        filename=.protecao #define a localizaçao dos ficheiros
+                        filename2=.protecao2 #define a localizaçao dos ficheiros
+
+                        ####################################################################################################
+                        #
+                        #     correr o file no caso -p sendo /home/(user)/Desktop/(folder)
+                        #     guardar em outra folder -p sendo /home/(user)/Desktop/(folder) /home/root/save_folder/
+                        #     correr o file no caso -v .protecao .portecao2
+                        #
+                        ####################################################################################################
+
+
+                        if [ $# -eq 0 ]
+                        then
+                                echo "Invalid switch $1
+                                Uso: ./vigia_pirata.sh [{-p <diretoria[<diretoria>] | -c}] [-f <ficheiro>]
+                                    $(tput setaf 2)-p $(tput setaf 1): $(tput setaf 7)Protege e guarda informação acerca de uma ou mais diretorias
+                                    $(tput setaf 3)-v $(tput setaf 1): $(tput setaf 7)Verifica alterações em ficheiros desde que foram protegidos
+                                    $(tput setaf 6)-f $(tput setaf 1): $(tput setaf 7)Indicação do nome do ficheiro onde a base de dados será guardada
+
+                                    (Por defeito será /home/n0rbelio/Desktop/proj_SO/.protecao)
+
+                                    "
+                        fi
+
+                        #menu de incialização
+                        if [ $# -eq 1 ]
+                        then
+                            echo "Invalid switch $1
+                                Uso: ./vigia_pirata.sh [{-p <diretoria[<diretoria>] | -c}] [-f <ficheiro>]
+                                    $(tput setaf 2)-p $(tput setaf 1): $(tput setaf 7)Protege e guarda informação acerca de uma ou mais diretorias
+                                    $(tput setaf 3)-v $(tput setaf 1): $(tput setaf 7)Verifica alterações em ficheiros desde que foram protegidos
+                                    $(tput setaf 6)-f $(tput setaf 1): $(tput setaf 7)Indicação do nome do ficheiro onde a base de dados será guardada
+
+                                    (Por defeito será /home/n0rbelio/Desktop/proj_SO/.protecao)
+
+                                    "
+                        exit 2
+
+
+
+                        else
+                            while getopts "p:v:f" OPTION #vai obter a opão escolhida
+                            do
+                            case $OPTION in # qual seja a opçao escolhida pelo utilizaodr vai ser processada aqui
+
+                                p)
+                                    if [ -d $3 ];
+                                    then
+                                        touch $3/.protecao
+                                        ls $2 -lr -A > $2.protecao #define que a pasta predefenida será esta
+                                        echo ""
+                                        echo " $(tput setaf 2)≡ $(tput setaf 7)Base de dados de proteção $3/.protecao criada"
+                                        echo ""
+                                        exit 0
+                                        elif [ -n $3 ]; #caso o utilizador tenha escolhido uma localizaçao vai ser criada aqui
+                                    then
+                                        touch $4.protecao #cria o ficheiro protecao onde vai ter toda a descriçao dos fichieros e pastas no diretorio escolhido
+                                        ls $2 -lr -A > $4
+                                        echo ""
+                                        echo " $(tput setaf 2)≡ $(tput setaf 7)Base de dados de proteção$4 criada"
+                                        echo ""
+                                    else
+                                        echo ""
+                                        echo " $(tput setaf 1)× $(tput setaf 7)Erro em criar a base de dados"
+                                        echo ""
+                                    fi
+                                    ;;
+
+
+                                v)
+                                if [ -e "$file2" ]; #vai verificar se o ficheiro 2 existe se sim
+                                    then
+                                        diff -y .protecao .protecao2 #vai comparar a protecao com a proteçao 2
+                                        echo ""
+                                        echo "$(tput setaf 2) ≡ $(tput bold)Made by $(tput setaf 7)$(tput blink)Andre"$(tput sgr0)
+                                        echo ""
+                                        tar -czvf vigia_recurso $root_folder |sha256sum > .protegido.sha #vai fazer um checksum do zip vai gerar um value de 256 bits e vai ver se algum file dentro do zip foi alterado
+                                        cp .protecao .protecao2 #vai copiar tudo o que tiver dentro da proteçao e enviar para a proteçao 2
+                                    else
+                                        echo ""
+                                        echo " $(tput setaf 1)× $(tput setaf 7)Não tenho ficheiro para comparar"
+                                        echo ""
+                                        touch .protecao2 #vai criar o filheiro proteçao 2
+                                        cp .protecao .protecao2 #vai copiar tudo o que tiver dentro da proteçao e enviar para a proteçao 2
+                                        echo ""
+                                        echo "$(tput setaf 1)PORFAVOR! $(tput setaf 7)corre o $(tput setaf 4)-p $(tput setaf 7)de novo para procurar atualizções no diretorio."
+                                        echo "$(tput setaf 2):D $(tput setaf 7)Obrigado, Bom fim de semana!"
+                                        echo ""
+                                fi
+                                ;;
+
+                                ?)
+                                    exit 0
+                                ;;
+                            esac
+                            done
+                        fi
+                    </code>
+                </pre>
+
+            </div>        
             
         </div>
-        
 
         <script src="../age_calc.js"></script>
         <script src="../nav_menus.js"></script>

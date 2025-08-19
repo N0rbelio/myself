@@ -73,11 +73,96 @@
                 </select>
             </div>
         </nav>
-        <div class="container">        
+        <div class="container_big">        
 
             <div class="text">
+                    <section id="pirsi">
+                        <h1>Projeto Integrado em Redes e Sistemas Informáticos (PIRSI)</h1>
+                        <p>
+                            Este foi o projeto final do meu <strong>CTeSP em Redes e Sistemas Informáticos (2022/2023)</strong>, 
+                            desenvolvido em equipa por quatro alunos. O objetivo foi simular a infraestrutura de TI de uma empresa de média dimensão, 
+                            desenhando e implementando todos os <strong>serviços de rede, sistemas e segurança</strong> necessários para suportar as operações.
+                        </p>
 
-  
+                        <h2>Objetivos</h2>
+                        <ul>
+                            <li>Recriar um <strong>ambiente de TI realista</strong> para uma empresa com duas localizações.</li>
+                            <li>Aplicar conhecimentos de <strong>redes, servidores e segurança</strong>.</li>
+                            <li>Garantir infraestrutura <strong>segura, escalável e eficiente</strong>.</li>
+                            <li>Desenvolver <strong>trabalho em equipa e gestão de projeto</strong>.</li>
+                        </ul>
+
+                        <h2>Planeamento & Arquitetura</h2>
+                        <h3>Desenho da Rede</h3>
+                        <ul>
+                            <li><strong>Topologia hierárquica</strong> (core, distribuição e acesso).</li>
+                            <li>VPN site-to-site entre sede (Porto) e delegação (Ermesinde).</li>
+                            <li><strong>VLANs</strong> para departamentos (Administração, Desenvolvimento, Financeiro, VOIP, Wi-Fi, DMZ).</li>
+                            <li>Endereçamento IP planeado e ligações redundantes na sede.</li>
+                            <li><strong>Domínios:</strong> porto.here4u4.local e ermesinde.here4u4.local.</li>
+                        </ul>
+
+                        <h2>Orçamento & Recursos</h2>
+                        <ul>
+                            <li><strong>Hardware & Software:</strong> ~26.128,89€.</li>
+                            <li><strong>Mão de obra (4 técnicos, 3 meses):</strong> ~16.320€.</li>
+                            <li><strong>Total:</strong> ~68.577,78€.</li>
+                            <li><strong>Internet mensal:</strong> ~79€ (Vodafone + MEO).</li>
+                        </ul>
+
+                        <h2>Serviços Implementados</h2>
+                        <h3>Sede (Porto)</h3>
+                        <ul>
+                            <li>Active Directory + SAMBA.</li>
+                            <li>DNS & DHCP.</li>
+                            <li>VOIP (Asterisk).</li>
+                            <li>Servidor de Email.</li>
+                            <li>Servidor Web.</li>
+                            <li>Servidor de Ficheiros.</li>
+                            <li>Snort (IDS).</li>
+                            <li>Backups automáticos.</li>
+                            <li>OpenSSH.</li>
+                        </ul>
+
+                        <h3>Delegação (Ermesinde)</h3>
+                        <ul>
+                            <li>Integração no domínio central.</li>
+                            <li>OpenSSH para administração remota.</li>
+                            <li>Ligação à sede via VPN.</li>
+                        </ul>
+
+                        <h2>Testes & Validação</h2>
+                        <p>O projeto foi testado em duas fases:</p>
+                        <ol>
+                            <li><strong>Simulação em GNS3</strong> – topologias, endereçamento e routing.</li>
+                            <li><strong>Implementação em laboratório físico</strong> – versão reduzida com equipamentos reais.</li>
+                        </ol>
+                        <p><em>Resultados:</em> VLANs, conectividade, VOIP, Web, Email, Backups e IDS validados com sucesso.</p>
+
+                        <h2>Resultados Principais</h2>
+                        <ul>
+                            <li>Construção de uma <strong>infraestrutura IT de nível empresarial</strong>.</li>
+                            <li>Equilíbrio entre segurança, escalabilidade e custos.</li>
+                            <li>Experiência prática com AD, VOIP, IDS, Backup, VPNs.</li>
+                            <li>Competências reforçadas em documentação e colaboração.</li>
+                        </ul>
+
+                        <h2>Lições Aprendidas</h2>
+                        <ul>
+                            <li>O <strong>planeamento</strong> é essencial antes da implementação.</li>
+                            <li>Importância do <strong>trabalho em equipa</strong> e divisão de tarefas.</li>
+                            <li>A <strong>documentação</strong> é tão importante quanto a parte técnica.</li>
+                            <li><strong>Simulações (GNS3)</strong> ajudam a validar antes da fase física.</li>
+                            <li>A <strong>segurança</strong> deve ser integrada desde o início.</li>
+                        </ul>
+
+                        <p>
+                            Este projeto foi uma <strong>simulação completa do ambiente de TI de uma empresa</strong>, demonstrando como 
+                            uma equipa de quatro estudantes conseguiu atuar como uma equipa de IT real — desde o desenho e orçamento até à implementação funcional.
+                        </p>
+                    </section>
+
+        </div>
                 
                 
                 <pre><code class="language-python">matriz = []    
