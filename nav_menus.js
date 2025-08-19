@@ -45,15 +45,37 @@ document.addEventListener('click', (e) => {
     }
 });
 
+
+// Lang select switch
 const langSelect = document.getElementById('lang-select');
 
+(function setLangFromURL() {
+  const currentPath = window.location.pathname;
+  if (currentPath.startsWith('/en/')) {
+    langSelect.value = 'en';
+  } else {
+    langSelect.value = 'pt';
+  }
+});
+
 langSelect.addEventListener('change', () => {
-    const selected = langSelect.value;
-    
-    // Redirect to the selected language page
-    if (selected === 'en') {
-    window.location.href = 'en/index.html'; 
-    } else if (selected === 'pt') {
-    window.location.href = '../index.html'; 
+  const selected = langSelect.value;
+  const currentPath = window.location.pathname;
+
+  if (selected === 'en') {
+    if (!currentPath.startsWith('/en/')) {
+      if (currentPath === '/' || currentPath === '/index.html') {
+        window.location.pathname = '/en/index.html';
+      } else {
+        window.location.pathname = '/en' + currentPath;
+      }
     }
+  } else if (selected === 'pt') {
+    if (currentPath.startsWith('/en/')) {
+      const newPath = currentPath.replace(/^\/en/, '') || '/index.html';
+      window.location.pathname = newPath;
+    } else {
+      window.location.pathname = currentPath;
+    }
+  }
 });
