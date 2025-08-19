@@ -46,15 +46,15 @@ document.addEventListener('click', (e) => {
 });
 
 
-// Lang select switch
+
 const langSelect = document.getElementById('lang-select');
 
-// Detect base path (e.g. "/myself" for GitHub Pages repo)
+
 const basePath = window.location.pathname.split('/')[1]
   ? `/${window.location.pathname.split('/')[1]}`
   : '';
 
-// 🔹 Auto-select based on current URL
+
 (function setLangFromURL() {
   const currentPath = window.location.pathname;
   if (currentPath.startsWith(`${basePath}/en/`)) {
@@ -64,14 +64,13 @@ const basePath = window.location.pathname.split('/')[1]
   }
 })();
 
-// 🔹 Change event handler
+
 langSelect.addEventListener('change', () => {
   const selected = langSelect.value;
-  const currentPath = window.location.pathname; // e.g. /myself/ or /myself/en/projects.html
+  const currentPath = window.location.pathname; 
 
   if (selected === 'en') {
     if (!currentPath.startsWith(`${basePath}/en/`)) {
-      // Handle root and index
       if (
         currentPath === `${basePath}/` ||
         currentPath === `${basePath}/index.html`
@@ -84,17 +83,14 @@ langSelect.addEventListener('change', () => {
     }
   } else if (selected === 'pt') {
     if (currentPath.startsWith(`${basePath}/en/`)) {
-      // Remove /en from path
       let newPath = currentPath.replace(`${basePath}/en`, basePath);
 
-      // If it ends with / (like /myself/), stay there
       if (newPath === `${basePath}/`) {
         window.location.pathname = newPath;
       } else {
         window.location.pathname = newPath || `${basePath}/index.html`;
       }
     } else {
-      // Already in PT root → stay
       window.location.pathname = currentPath;
     }
   }

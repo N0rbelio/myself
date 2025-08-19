@@ -19,10 +19,10 @@
         <link rel="stylesheet" href="../styles/root.css">
         <link rel="stylesheet" href="../styles/nav.css">
 
-        
+
         <!-- Highlight.js JavaScript -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
         <script>hljs.highlightAll();</script>
         
         
@@ -77,34 +77,81 @@
 
             <div class="text">
 
-  
-                
-                
-                <pre><code class="language-python">matriz = []    
-# Leitura da matriz
-for i in range(5):
-    linha = []
-    for j in range(5):
-        elemento = float(input(f"Insira o elemento M[{i+1}][{j+1}]: "))
-        linha.append(elemento)
-    matriz.append(linha)
+                <pre><code class="language-python">
+##########################################################
+##########################################################
+###                                                 ######
+###         API para IPMA - CLA Technologies        ######
+###             Licenciado em LGPL v2.1             ######
+###                                                 ######
+###                                                 ######
+##########################################################
+##########################################################
 
-# Cálculo do maior elemento de cada linha
-maiores_elementos_linha = [max(linha) for linha in matriz]
+#importar os modulos necessarios
+from basedados import *
+from urllib import request # importar conteudo url para memoria
+import urllib, socket, json # # handling erros urllib, verificar conexão a internet e handling jsons respetivamente
 
-# Cálculo da média dos elementos de cada coluna
-medias_coluna = [sum(coluna) / 5 for coluna in zip(*matriz)]
+class IPMA(): #classe IPMA
+    def __init__(self, id_cidade): #criar instancias para criar este modulo, assim o contactest.py pode passar para aqui
+        self.id_cidade = id_cidade # instancia publica entre funções
 
-# Exibição dos resultados
-print("\nMaior elemento de cada linha:")
-for i, maior_elemento in enumerate(maiores_elementos_linha, start=1):
-    print(f"Na linha {i}: {maior_elemento}")
+    def _consulta_generica(self, diaprevisao): # funcao para descarregar o json da ipma e uma instancia que vai receber o valor da funcao consulta_hoje amanha e depois de amanha
+        if diaprevisao == "ValueIssue":
+            return ValueError
+        else:
+            try: # tenta descarregar o json do ipma, se não conseguir passa para except
+                sitejson = request.urlopen('http://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{}.json'.format(self.id_cidade)) #descarrega o json da ipma
+            except urllib.error.HTTPError or urllib.error.URLError: # caso receber erro ou raise, acaba o modulo
+                return ConnectionError
+            else:
+                jsonficheiro = json.loads(sitejson.read().decode(sitejson.info().get_param('charset') or 'utf-8')) #carrega o json para memoria
+                fornecedorapi = jsonficheiro["owner"] # retira do json a chave owner e poe na variavel
+                pais = jsonficheiro["country"] # ...
+                tmpmin = float(jsonficheiro["data"][diaprevisao]["tMin"]) # ...
+                tmpmax = float(jsonficheiro["data"][diaprevisao]["tMax"]) # ...
+                probprecip = float(jsonficheiro["data"][diaprevisao]["precipitaProb"]) # ...
+                return tmpmin, tmpmax, probprecip, pais, fornecedorapi # retorna os valores das variaveis num tuple
 
-print("\nMédia dos elementos de cada coluna:")
-for j, media_coluna in enumerate(medias_coluna, start=1):
-    print(f"Na coluna {j}: {media_coluna:.2f}")
-</code></pre>
+    def consulta_dia(self, escolha):
+        try: # tenta executar o codigo de baixo
+            if escolha == 0: # deteta o input da variavel escolha 0 e corre a funcao do modulo apiipma
+                return self._consulta_generica(0) # retorna o dia hoje para a função _consulta_generica
+            elif escolha == 1: # ...
+                return self._consulta_generica(1) # ...
+            elif escolha == 2: # ...
+                return self._consulta_generica(2) # ...
+            else: # se nao detetar entre o alcance passa para o raise
+                raise ValueError() # aqui ele sai do try com um raise que serve para mostrar o erro em vez de retornar o valor da funcao do modulo apiipma
+        except ValueError as erro: # o except acaba a funcao retorna o erro
+            return self._consulta_generica("ValueIssue")
+
+def estaligado(): # funcao para detetar conectividade a internet
+    try:
+        sock = socket.create_connection(("www.mozilla.org", 80)) # Guarda detalhes da conexao a porta 80 mozilla
+        if sock is not None: # se a conexao retornar detalhes fecha a conexao
+            sock.close
+        return True # e retorna True
+    except OSError: # passa para o except se detetar um erro de connexao
+        pass
+    return False # retorna falso
+
+# Boilerplate para não inciar codigo até que for convocado
+if __name__ == "__main__":
+    print("Isto é um modulo!") # indica que foi iniciado diretamente
+else:
+    print("Importado modulo IPMA") # text que o modulo iniciou
+    conexaoTest = estaligado() # Verifica a ligação à internet antes de iniciar o modulo
+
+# id: 1010500 cidade: Aveiro
+
+                </code></pre>
                     
+            </div>
+            <br class="space0">
+            <div class="text">
+
             </div>
             
         </div>
