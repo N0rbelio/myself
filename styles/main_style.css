@@ -91,3 +91,89 @@ header {
     }
 
 }
+
+
+/* ---- PIRSI ----- */
+#pirsi {
+    margin-top: 100px;
+    margin-bottom: 80px;
+    padding: 30px;
+    border-radius: 12px;
+    background: rgba(204, 204, 204, 0.1); 
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #f8eded;
+    line-height: 1.6;
+}
+
+#pirsi h1, 
+#pirsi h2, 
+#pirsi h3 {
+    color: #4da6ff; 
+    margin-bottom: 15px;
+}
+
+#pirsi h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    text-shadow: 0 0 8px rgba(77, 166, 255, 0.6);
+}
+
+#pirsi h2 {
+    font-size: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding-bottom: 5px;
+    margin-top: 40px;
+}
+
+#pirsi h3 {
+    font-size: 1.2rem;
+    margin-top: 20px;
+}
+
+#pirsi ul, 
+#pirsi ol {
+    margin: 15px 0 20px 25px;
+}
+
+#pirsi li {
+    margin-bottom: 8px;
+}
+
+#pirsi p {
+    margin-bottom: 20px;
+}
+
+
+#pirsi strong {
+    color: #ffd166;
+}
+
+
+#pirsi a {
+    color: #4da6ff;
+    text-decoration: none;
+}
+
+#pirsi a:hover {
+    text-decoration: underline;
+}
+
+/* Phones */
+@media screen and (max-width: 883px) {
+    #pirsi {
+        margin: 40px 15px;
+        padding: 20px;
+    }
+
+    #pirsi h1 {
+        font-size: 1.6rem;
+    }
+
+    #pirsi h2 {
+        font-size: 1.3rem;
+    }
+}
