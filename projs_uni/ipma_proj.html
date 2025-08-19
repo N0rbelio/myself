@@ -140,9 +140,9 @@ else:
 # id: 1010500 cidade: Aveiro
 
                 </code></pre>
-                
+            </div>
                 <br class="space40">
-                
+            <div class="text">
                 <p> Ficheiro basedados.py </p>
                 <pre><code class="language-python">
 import datetime
@@ -260,10 +260,11 @@ session.close()
 engine.dispose()
 
                 </code></pre>
-    
+            </div>
                 <br class="space40">
-                
+            <div class="text">
                 <p> Ficheiro usrmgr.py </p>
+                <br>
                 <pre><code class="language-python">
 import tkinter as tk
 from tkinter import ttk, messagebox
@@ -298,8 +299,8 @@ class usrjanela(tk.Tk):
 
         self.textUsr=Entry(self, width=60)
         self.textUsr.insert(INSERT, "Escreva o comando aqui... ou escreva 'help' para ajuda")
-        self.textUsr.bind("<Button>", lambda event: self.textUsr.delete(0, END))
-        self.textUsr.bind("<Return>", self.retrieve_input)
+        self.textUsr.bind("❮Button❯", lambda event: self.textUsr.delete(0, END))
+        self.textUsr.bind("❮Return❯", self.retrieve_input)
         self.textUsr.pack(padx=10,pady=15, anchor="nw", fill="both")
 
         scrollbar = ttk.Scrollbar(self, orient='vertical', command=self.usr_table.yview)
@@ -409,11 +410,12 @@ class usrjanela(tk.Tk):
             messagebox.showerror("Conexão à DB", "DB retornou NULL",parent=self.usrWindow)
 
                 </code></pre>
-
+            </div>
 
                 <br class="space40">
-                
+            <div class="text">   
                 <p> Por Ultimo Ficheiro main_GUI.py </p>
+                <br>
                 <pre><code class="language-python">
 import tkinter as tk
 from basedados import *
@@ -442,12 +444,12 @@ class MyWindow(tk.Tk):
         label1.grid(row=0, column=0, padx=10, pady=10, sticky="e")
         self.entry1 = tk.Entry(self.login_frame)  # Store as instance variable
         self.entry1.grid(row=0, column=1, padx=10, pady=10, sticky="w")
-        self.entry1.bind("<Return>", self.sendIDlogon) # clicar com "ENTER" dá login
+        self.entry1.bind("❮Return❯", self.sendIDlogon) # clicar com "ENTER" dá login
         button = tk.Button(self.login_frame, text="Enter", command=self.sendIDlogon)
         button.grid(row=2, column=0, columnspan=2, pady=10)
         label00 = tk.Label(self, text="Invisible Label", bg=self["bg"], fg=self["bg"])
         label00.place(relx=0.5, rely=0.8, anchor="center")
-        label00.bind("<Button-1>", self.on_invisible_label_click)
+        label00.bind("❮Button-1❯", self.on_invisible_label_click)
 
         #chama a frame do tempo
         self.tempo_frame = tk.Frame(self)
@@ -688,8 +690,8 @@ class MyWindow(tk.Tk):
 
         self.textBox=Entry(self.newWindow, width=60)
         self.textBox.insert(INSERT, "Escreva o comando aqui... ou escreva 'help' para ajuda")
-        self.textBox.bind("<Button>", lambda event: self.textBox.delete(0, END))
-        self.textBox.bind("<Return>", self.retrieve_input)
+        self.textBox.bind("❮Button❯", lambda event: self.textBox.delete(0, END))
+        self.textBox.bind("❮Return❯", self.retrieve_input)
         self.textBox.pack(padx=10,pady=15, anchor="nw", fill="both")
 
         scrollbar = ttk.Scrollbar(self.newWindow, orient='vertical', command=self.log_table.yview)
@@ -801,7 +803,7 @@ class MyWindow(tk.Tk):
         settext = "Introduza a palavra passe:"
         self.display_text.set(settext)
         self.passwd = tk.Entry(self.passbox, show="*")  # Store as instance variable
-        self.passwd.bind("<Return>",lambda event: self.passverify())
+        self.passwd.bind("❮Return❯",lambda event: self.passverify())
         self.passwd.pack(side='left')
         # create widgets with toplevel instance as parent
         but = Button(self.passbox, text='Enter', command=self.passverify).pack(side='right')
@@ -820,10 +822,7 @@ window.mainloop()
 
                 </code></pre>
             </div>
-            <br class="space40">
-            <div class="text">
-
-            </div>
+        </div>
             
         </div>
         
