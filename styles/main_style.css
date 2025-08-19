@@ -85,33 +85,28 @@ header {
 
     .text {
         margin-top: 60px;
-        margin-right: 50px;
-        margin-left: 50px;
+        margin-right: 0px;
+        margin-left: 0px;
         margin-bottom: 30px;
+        padding: 3px;
     }
 
+    .container_big {
+        margin-left: 4%;
+        margin-right: 4%;
+        min-width: 300px;
+        width: auto;
+    
+    }
 }
 
 
 /* ---- PIRSI ----- */
-#pirsi {
-    margin-top: 100px;
-    margin-bottom: 80px;
-    padding: 30px;
-    border-radius: 12px;
-    background: rgba(204, 204, 204, 0.1); 
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    color: #f8eded;
-    line-height: 1.6;
-}
 
 #pirsi h1, 
 #pirsi h2, 
 #pirsi h3 {
-    color: #4da6ff; 
+    color: #749fca; 
     margin-bottom: 15px;
 }
 
@@ -119,7 +114,6 @@ header {
     font-size: 2rem;
     text-align: center;
     margin-bottom: 40px;
-    text-shadow: 0 0 8px rgba(77, 166, 255, 0.6);
 }
 
 #pirsi h2 {
@@ -149,7 +143,7 @@ header {
 
 
 #pirsi strong {
-    color: #ffd166;
+    color: #be804d;
 }
 
 
