@@ -76,18 +76,11 @@
         <div class="container">        
 
             <div class="text">
+                <h3> Aqui temos o projeto que consistia em desenvolver aplicação em python que falasse com a API do IPMA e fizesse uma consulta de previsão do tempo para uma determinada localização bem como uma data. </h3>
+                <h3> Tambem fui pedido para ser criada uma DB que gravasse as informações do utilizador como destrito, id, nome, genero e numero do cartão</h3>
 
+                <p> Ficheiro apiipma.py </p>
                 <pre><code class="language-python">
-##########################################################
-##########################################################
-###                                                 ######
-###         API para IPMA - CLA Technologies        ######
-###             Licenciado em LGPL v2.1             ######
-###                                                 ######
-###                                                 ######
-##########################################################
-##########################################################
-
 #importar os modulos necessarios
 from basedados import *
 from urllib import request # importar conteudo url para memoria
@@ -147,9 +140,687 @@ else:
 # id: 1010500 cidade: Aveiro
 
                 </code></pre>
-                    
+                
+                <br class="space40">
+                
+                <p> Ficheiro basedados.py </p>
+                <pre><code class="language-python">
+import datetime
+from apiipma import *
+from sqlalchemy import create_engine, Column, Integer, String, DateTime, update, delete, MetaData, Table, Numeric, insert, text
+from sqlalchemy.orm import sessionmaker, declarative_base, relationship
+
+Base = declarative_base()
+
+SQLALCHEMY_SILENCE_UBER_WARNING=1
+
+# Caminho da base de dados
+db_uri = "sqlite:///miniproj.db"
+# Cria o engine SQLite com modo verbose
+engine = create_engine(db_uri, echo=False)
+
+# Associa a sessão ao engine com o caminho da base de dados
+Session = sessionmaker(bind=engine)
+Base.metadata.create_all(engine)
+# Criar a sessão
+session = Session()
+
+# Criar class Usr para a tabela Usr da base de dados
+class AlldatUsr(Base):
+    __tablename__ = "Usr"
+
+    idUsr = Column(Integer, name="idUsr", primary_key=True, autoincrement=True)
+    nomeUsr = Column(String, name="nomeUsr")
+    nomeCidade = Column(String, name="nomeCidade")
+    generoSexo = Column(String, name="generoSexo")
+    codigoCidade = Column(Integer, name ="codigoCidade")
+    cardID = Column(Integer, name="cardID")
+
+    def __str__(self):
+        return "%s,%s,%s,%s" % (self.nomeUsr, self.nomeCidade, self.generoSexo, self.codigoCidade)
+
+#Criar class Cidade para a tabela Usr da base de dados
+class Cidade(Base):
+     __tablename__ = "Cidade"
+
+     codigoCidade = Column(Integer, name="codigoCidade", primary_key=True)
+     nomeCidade = Column(String, name="nomeCidade")
+
+     def __str__(self):
+         return "%s,%s" % (self.codigoCidade, self.nomeCidade)
+
+# Criar class logbase para a tabela logs da base de dados
+class logbase(Base):
+    __tablename__ = "logs"
+
+    logid = Column(Integer, name="logid", primary_key=True, autoincrement=True)
+    data = Column(String, name="data")
+    hora = Column(String, name="hora")
+    tipo = Column(String, name="tipo")
+    mensagem = Column(String, name ="mensagem")
+    idrequested = Column(String, name ="idrequested")
+
+    def __str__(self):
+        return "%s,%s,%s,%s,%s,%s" % (self.logid, self.data, self.hora, self.tipo, self.mensagem, self.idrequested)
+
+###### Comunicação com API ######
+
+# Classe para login
+# Neste caso vai ser usado para apenas receber o valor do ID e retornar os valores que estao na DB
+class APIConnectlogon():
+    #inicializar idcard para receber valor quando chamado por outro programa
+    def __init__(self, idcard):
+        self.idcard = idcard
+
+    # Função que chama a classe que retorna os valores nas colunas na db
+    # A função faz o query baseado no ID do cartão e retorna os valores em tuple
+    def totupledbsend(self):
+        #metodo try catch para verificação
+        try:
+            # variavel que vai receber o id quando for chamado
+            idconn = session.query(AlldatUsr).filter(AlldatUsr.cardID==self.idcard).first()
+            print(idconn)
+            # se o valor da variavel não coincidir ao da base de dados ele retorna none
+            if idconn is None:
+                # neste caso é feito um raise que será apanhado pelo except
+                raise ValueError()
+            else: # se o id coincidir com o da base de dados, o programa segue e retorna os valores da db
+                tuplelize = str(idconn) # converte o pedido à classe AlldatUsr para guarda la em forma string
+                tuplelize = tuplelize.split(',') # retira as virgulas
+            return tuplelize
+        except ValueError as erro:
+            return ValueError
+            exit() # sai do programa
+
+# Classe para logs
+class LogConnect():
+    # incializar mensagem e tipo para enviar para interactlog
+    def __init__(self, tipor, mensagemr, idrequestedr):
+        self.tipor = tipor
+        self.mensagemr = mensagemr
+        self.idrequestedr = idrequestedr
+
+    #interagir com a tabela logs e adicionar dados
+    def interactlog(self):
+        datatab = datetime.datetime.now()
+        update = logbase(data=datatab.strftime("%x"), hora=datatab.strftime("%X"), tipo=self.tipor, mensagem=self.mensagemr, idrequested=self.idrequestedr)
+        session.add(update)
+        session.commit()
+
+    def cleanlogs(self):
+        datatab = datetime.datetime.now()
+        session.query(logbase).delete()
+        statement = text("UPDATE SQLITE_SEQUENCE SET seq = 1 WHERE name = 'logs'")
+        session.execute(statement)
+        session.add(logbase(logid="1",data=datatab.strftime("%x"), hora=datatab.strftime("%X"),tipo="INIT",mensagem="Logmanager increment reset!", idrequested="root"))
+        session.commit()
+
+# Fechar a sessao e o engine
+session.close()
+engine.dispose()
+
+                </code></pre>
+    
+                <br class="space40">
+                
+                <p> Ficheiro usrmgr.py </p>
+                <pre><code class="language-python">
+import tkinter as tk
+from tkinter import ttk, messagebox
+from tkinter import *
+from basedados import *
+
+class usrjanela(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        #janela logs
+        self.title("Users")
+        self.geometry("900x400")
+        self.usrWindow = tk.Frame(self)
+
+        self.usr_table = ttk.Treeview(self)
+        self.usr_table['columns'] = ('iduser','nomeuser', 'nomecidade', 'genero', 'codigocidade','cardid')
+        self.usr_table.column("#0", width=0,  stretch=NO)
+        self.usr_table.column("iduser",anchor=CENTER, width=50)
+        self.usr_table.column("nomeuser",anchor=CENTER, width=100)
+        self.usr_table.column("nomecidade",anchor=CENTER,width=100)
+        self.usr_table.column("genero",anchor=CENTER,width=30)
+        self.usr_table.column("codigocidade",anchor=CENTER,width=50)
+        self.usr_table.column("cardid",anchor=CENTER,width=50)
+
+        self.usr_table.heading("#0",text='',anchor=CENTER)
+        self.usr_table.heading("iduser",text='ID User',anchor=CENTER)
+        self.usr_table.heading("nomeuser",text='Nome utilizador',anchor=CENTER)
+        self.usr_table.heading("nomecidade",text='Cidade',anchor=CENTER)
+        self.usr_table.heading("genero",text='Género',anchor=CENTER)
+        self.usr_table.heading("codigocidade",text='Cod. Cidade',anchor=CENTER)
+        self.usr_table.heading("cardid",text='ID Cartão',anchor=CENTER)
+
+        self.textUsr=Entry(self, width=60)
+        self.textUsr.insert(INSERT, "Escreva o comando aqui... ou escreva 'help' para ajuda")
+        self.textUsr.bind("<Button>", lambda event: self.textUsr.delete(0, END))
+        self.textUsr.bind("<Return>", self.retrieve_input)
+        self.textUsr.pack(padx=10,pady=15, anchor="nw", fill="both")
+
+        scrollbar = ttk.Scrollbar(self, orient='vertical', command=self.usr_table.yview)
+        scrollbar.pack(pady='10',side='right', fill='y')
+        #  communicate back to the scrollbar
+
+        self.usr_table['yscrollcommand'] = scrollbar.set
+        self.usr_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+
+    def retrieve_input(self,event=None):
+         self.commandbox()
+         self.textUsr.delete(0, END)
+
+    def commandbox(self):
+        self.inputcomm = self.textUsr.get()
+        print(self.inputcomm)
+
+        if self.inputcomm == "show":
+            for row in self.usr_table.get_children():
+               self.usr_table.delete(row)
+            self.showusr()
+
+        elif "query." in self.inputcomm:
+            for row in self.usr_table.get_children():
+               self.usr_table.delete(row)
+            self.querymode(self.inputcomm)
+
+        elif self.inputcomm == "help":
+            self.showhelp()
+
+        elif "adduser" in self.inputcomm:
+            self.adduser(self.inputcomm)
+            for row in self.usr_table.get_children():
+               self.usr_table.delete(row)
+            self.showusr()
+
+        elif "deleteuser" in self.inputcomm:
+            self.deleteuser(self.inputcomm)
+            for row in self.usr_table.get_children():
+               self.usr_table.delete(row)
+            self.showusr()
+        else:
+            self.notifybox("E100")
+
+    def adduser(self,addrec):
+        getuserdata = addrec.split('=')
+        session.add(AlldatUsr(nomeUsr=getuserdata[1],nomeCidade=getuserdata[2],generoSexo=getuserdata[3],codigoCidade=getuserdata[4],cardID=getuserdata[5]))
+        session.commit()
+
+    def deleteuser(self,deleterec):
+        getuserdata = deleterec.split('=')
+        session.query(AlldatUsr).filter(AlldatUsr.idUsr == getuserdata[1]).delete()
+        session.commit()
+
+    def querymode(self, argrec):
+        if ".by" in argrec:
+            if ".city=" in argrec:
+                getqueryid = argrec.split('=')
+                idconn = session.query(AlldatUsr.__table__).filter(AlldatUsr.nomeCidade==getqueryid[1]).all()
+                for class_instance in idconn:
+                    in1 = self.usr_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+                self.usr_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+            elif ".whois=" in argrec:
+                getquerytype = argrec.split('=')
+                idconn = session.query(AlldatUsr.__table__).filter(AlldatUsr.cardID==getquerytype[1]).all()
+                for class_instance in idconn:
+                    in1 = self.usr_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+                self.usr_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+            elif ".gender=" in argrec:
+                getquerygender = argrec.split('=')
+                idconn = session.query(AlldatUsr.__table__).filter(AlldatUsr.generoSexo==getquerygender[1]).all()
+                for class_instance in idconn:
+                    in1 = self.usr_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+                self.usr_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+            else:
+                self.notifybox("E100")
+            if not idconn:
+                self.notifybox("E105")
+        else:
+            self.notifybox("E100")
+
+    def showusr(self):
+        row = session.query(AlldatUsr.__table__).all()
+        for class_instance in row:
+            in1 = self.usr_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+        self.usr_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+
+
+    def showhelp(self):
+        top = tk.Tk()
+        top.geometry("550x600")
+        top.title("Ajuda")
+        ajudlab = tk.Label(top, text="Manual de comandos", font=("Arial", 20), pady=10)
+        ajudlab.pack()
+        text_box = Text(top)
+        ajudtext = open("help_usr.txt", "r").read()
+        text_box.pack(pady=10,padx=10,anchor='n',expand=True)
+        text_box.insert('end', ajudtext)
+        text_box.config(state='disabled')
+        top.mainloop()
+
+    def notifybox(self,notifycode):
+        if notifycode == "E100":
+            messagebox.showerror("\nTerminal", "Erro sintaxe! Comando: '{}' não reconhecido! \
+            \nEscreva 'help' no prompt para ver uma lista de comandos.".format(self.inputcomm),parent=self.usrWindow)
+        elif notifycode == "E105":
+            messagebox.showerror("Conexão à DB", "DB retornou NULL",parent=self.usrWindow)
+
+                </code></pre>
+
+
+                <br class="space40">
+                
+                <p> Por Ultimo Ficheiro main_GUI.py </p>
+                <pre><code class="language-python">
+import tkinter as tk
+from basedados import *
+from apiipma import *
+from usrmgr import *
+from screeninfo import get_monitors
+from tkinter import ttk, messagebox
+from tkinter import *
+from PIL import Image, ImageTk
+
+class MyWindow(tk.Tk):
+
+    def __init__(self):
+        super().__init__()
+        LogConnect("INFO", "main_gui.py executado!","root").interactlog()
+        self.title("IPMA Login")
+        self.geometry("420x220")
+        self.iconphoto(False, tk.PhotoImage(file="fsociety.png"))
+
+        self.login_frame = tk.Frame(self)
+        # da um gap entre a window e o inicio dos ui elemets
+        self.login_frame.pack(pady=50)
+
+        # cria os ui elements para a frame login // botoes e textbox's
+        label1 = tk.Label(self.login_frame, text="ID:")
+        label1.grid(row=0, column=0, padx=10, pady=10, sticky="e")
+        self.entry1 = tk.Entry(self.login_frame)  # Store as instance variable
+        self.entry1.grid(row=0, column=1, padx=10, pady=10, sticky="w")
+        self.entry1.bind("<Return>", self.sendIDlogon) # clicar com "ENTER" dá login
+        button = tk.Button(self.login_frame, text="Enter", command=self.sendIDlogon)
+        button.grid(row=2, column=0, columnspan=2, pady=10)
+        label00 = tk.Label(self, text="Invisible Label", bg=self["bg"], fg=self["bg"])
+        label00.place(relx=0.5, rely=0.8, anchor="center")
+        label00.bind("<Button-1>", self.on_invisible_label_click)
+
+        #chama a frame do tempo
+        self.tempo_frame = tk.Frame(self)
+        self.login_frame.pack(pady=50)
+
+        #tabelatemp
+        self.temp_table = ttk.Treeview(self)
+        # centra a janela
+        self.center_window()
+
+        # guarda a cidade
+        self.cidade = ""
+
+    def center_window(self, screen_number=0):
+        self.update_idletasks()
+        window_width = self.winfo_width()
+        window_height = self.winfo_height()
+        # procura pelos monitores ligados
+        screen = get_monitors()[screen_number]
+        # guarda as rez do monitor
+        screen_x = screen.x
+        screen_y = screen.y
+        # divide a o tamnaho da rez para tentar centralizar
+        x = screen_x + (screen.width - window_width) // 2
+        y = screen_y + (screen.height - window_height) // 2
+        # guard o valor na var para ser chamada nos diferentes frames
+        self.geometry(f"{window_width}x{window_height}+{x}+{y}")
+        LogConnect("INFO", "Resolução de monitor calibrado. RES: {}".format(screen_number),"root").interactlog()
+
+    def sendIDlogon(self, event=None):
+        if estaligado() is False:
+            self.notifybox("E104")
+        else:
+            self.shareid = self.entry1.get()# recebe o id do
+            LogConnect("INFO", "ID nº{} tentou entrar no sistema".format(self.shareid), "root").interactlog()
+            if self.shareid == "admin":
+                self.passwdlogon()
+            else:
+                self.continueform()
+
+    def continueform(self):
+        idget = APIConnectlogon(self.shareid).totupledbsend()  #guarda o valor recebido da função corrida APIConnectlogon
+        if idget is ValueError:
+            self.notifybox("E101")
+        else:
+            LogConnect("INFO", "Codigo cidade nº{} recebido do ID nº{}".format(idget[3],self.shareid),"root").interactlog()
+            # recebe o nome da cidade do tuple idget e guarda na variavel global self.cidade
+            self.cidade = idget[1]
+            #aguarda por enter ou botao
+            self.user_default_city = idget[3]
+            # Clears the frame
+            self.login_frame.pack_forget()
+
+            # Update window title
+            self.title("Janela do tempo")
+
+            # Frame for tempo
+            self.tempo_frame = tk.Frame(self)
+            self.tempo_frame.pack(pady=30)
+            labelwelcome = tk.Label(self.tempo_frame, text="Bem-vindo(a), {}!".format(idget[0]), font=("Arial", 20))
+            labelwelcome.grid(row=1, column=0, padx=10)
+
+            radio_var = tk.StringVar()
+            # Create UI elements for the tempo frame
+            # radio buttons para escolher o dia
+            radio_var.set("Option 1")  # Set the default selection
+
+            radio1 = tk.Radiobutton(self.tempo_frame, text="Hoje", variable=radio_var, value="Option 1", command=lambda: self.escolha(self.user_default_city, 0))
+            radio1.grid(row=2, column=0, padx=10, pady=10)
+            radio2 = tk.Radiobutton(self.tempo_frame, text="Amanha", variable=radio_var, value="Option 2", command=lambda: self.escolha(self.user_default_city, 1))
+            radio2.grid(row=2, column=1, padx=10, pady=10)
+            radio3 = tk.Radiobutton(self.tempo_frame, text="Depois de Amanha", variable=radio_var, value="Option 3", command=lambda: self.escolha(self.user_default_city, 2))
+            radio3.grid(row=2, column=2, padx=10, pady=10)
+            radio4 = tk.Radiobutton(self.tempo_frame, text="Os 3 dias", variable=radio_var, value="Option 4", command=lambda: self.escolha(self.user_default_city, 3))
+            radio4.grid(row=2, column=3, padx=10, pady=10)
+
+
+            # Button to go back to the login frame
+            back_button = tk.Button(self.tempo_frame, text="Back", command=self.saida)
+            back_button.grid(row=1, column=5, padx=10, pady=10)
+            limpar_button = tk.Button(self.tempo_frame, text="Limpar Logs", command=self.cleanlogs)
+            limpar_button.grid(row=1, column=4, padx=10, pady=10)
+            log_button = tk.Button(self.tempo_frame, text="Ver logs", command=self.verlogs)
+            log_button.grid(row=1, column=3, padx=10, pady=10)
+            if self.shareid == "admin" and self.passwrec == "1234":
+                LogConnect("INFO", "Acedido com modo admin",self.shareid).interactlog()
+                log_button = tk.Button(self.tempo_frame, text="Gerir users", command=usrjanela)
+                log_button.grid(row=1, column=2, padx=5, pady=10)
+
+            # inciar tabela vazia
+            self.init_table()
+            self.temp_table.pack(padx=10,pady=20, fill="both")
+
+            # Update window layout and size
+            self.update_idletasks()
+            window_width = self.tempo_frame.winfo_reqwidth() + 200
+            window_height = self.tempo_frame.winfo_reqheight() + 290
+            self.geometry(f"{window_width}x{window_height}")
+
+            self.center_window()
+
+    def escolha(self, codigocidade, escolha):
+        self.shareday = escolha
+        if escolha == 3:
+            combined_data = []
+            LogConnect("INFO", "3 dias escolhidos",self.shareid).interactlog()
+            for i in range(3):
+                self.ipma_engine = IPMA(codigocidade).consulta_dia(i)
+                if self.ipma_engine is ConnectionError:
+                    self.notifybox("E104")
+                elif self.ipma_engine is ValueError:
+                    self.notifybox("E106")
+                else:
+                    combined_data.append((codigocidade, self.cidade, self.ipma_engine[0], self.ipma_engine[1], self.ipma_engine[2], self.ipma_engine[3], self.ipma_engine[4]))
+            self.sendval(*combined_data)
+        else:
+            self.ipma_engine = IPMA(codigocidade).consulta_dia(escolha)
+            if self.ipma_engine is ConnectionError:
+                self.notifybox("E104")
+            elif self.ipma_engine is ValueError:
+                self.notifybox("E106")
+            else:
+                self.sendval((codigocidade, self.cidade, self.ipma_engine[0], self.ipma_engine[1], self.ipma_engine[2], self.ipma_engine[3], self.ipma_engine[4]))
+
+    def show_login_frame(self):
+        # Clears the frame
+        self.entry1.delete(0, END)
+        self.tempo_frame.pack_forget()
+        self.temp_table.pack_forget()
+        # Update window title
+        self.title("IPMA Login")
+
+        # Show the login frame
+        self.login_frame.pack(pady=50)
+        self.tempo_frame = tk.Frame(self)
+
+        self.update_idletasks()  # força o update da window
+        window_width = self.tempo_frame.winfo_reqwidth() + 420  #da reset ao tamanho da window para o original
+        window_height = self.tempo_frame.winfo_reqheight() + 220  # da reset ao tamanho da window para o original
+
+        self.geometry(f"{window_width}x{window_height}") #junta as duas coords
+        self.center_window( )#força a window a centrar á resoluçao do monitor
+
+    def on_invisible_label_click(self, event):
+        popup_window = tk.Toplevel(self)
+        popup_window.title("fsociety00")
+        popup_window.iconphoto(False, tk.PhotoImage(file="fsociety.png"))
+
+        # Create a photoimage object of the image in the path
+        image1 = Image.open("easter-egg.png")
+        test = ImageTk.PhotoImage(image1)
+
+        label1 = tk.Label(popup_window, image=test)
+        label1.image = test
+
+        # Position image
+        label1.pack()
+
+    def sendval(self, *data):
+        self.temp_table.pack_forget()
+        self.init_table()
+        self.diareq = -1
+        for idx, self.d in enumerate(data):
+            in1 = self.temp_table.insert(parent='', index='end', iid=idx, values=self.d)
+            print(self.d)
+            self.loguserrequest(self.d)
+        self.temp_table.pack(padx=10,pady=20, fill="both")
+
+    def init_table(self):
+            # Criar tabela para listar dados da cidade
+            self.temp_table = ttk.Treeview(self)
+            self.temp_table['columns'] = ('IDCidade','Cidade', 'Temp minimo', 'Temp maximo', 'Prob. Chover')
+            self.temp_table.column("#0", width=0,  stretch=NO)
+            self.temp_table.column("IDCidade",anchor=CENTER, width=80)
+            self.temp_table.column("Cidade",anchor=CENTER, width=80)
+            self.temp_table.column("Temp minimo",anchor=CENTER,width=120)
+            self.temp_table.column("Temp maximo",anchor=CENTER,width=120)
+            self.temp_table.column("Prob. Chover",anchor=CENTER,width=120)
+
+            self.temp_table.heading("#0",text='',anchor=CENTER)
+            self.temp_table.heading("IDCidade",text='IDCidade',anchor=CENTER)
+            self.temp_table.heading("Cidade",text='Cidade',anchor=CENTER)
+            self.temp_table.heading("Temp minimo",text='Temp minimo',anchor=CENTER)
+            self.temp_table.heading("Temp maximo",text='Temp maximo',anchor=CENTER)
+            self.temp_table.heading("Prob. Chover",text='Prob.chover',anchor=CENTER)
+
+    def cleanlogs(self):
+        self.notifybox("E102")
+        LogConnect(None, None,None).cleanlogs()
+
+    def saida(self):
+        resposta = messagebox.askquestion('Sair', 'Deseja mesmo fechar a sessão?')
+        if resposta == "yes":
+            LogConnect("INFO", "ID nº{} fechou a sessão".format(self.shareid),"root").interactlog()
+            try:
+                self.newWindow.destroy()
+                self.show_login_frame()
+            except:
+                self.show_login_frame()
+        else:
+            pass
+
+    def loguserrequest(self, vezesreceb): # funcao que busca o valor ipma_engine da funcao escolha
+        self.diareq = self.diareq + 1
+        # o for imprime separadamente os valores do tuple que foi guardado na variavel ipma_engine que veio da funcao _consulta_generica do modulo apiipma
+        dadostuple = ("codigocidade", "cidade","tempmin", "tempmax", "probchuva", "pais", "fornecedor") # criar um tuple para juntar com os valores de ipma_engine em formato humano legivel
+        LogConnect("DATA", "------ DATA START ------", "{}".format(self.shareid)).interactlog()
+        LogConnect("USER", "ID REQUEST DE Nº{}".format(self.shareid), "{}".format(self.shareid)).interactlog()
+        for i in range(0, len(self.d)): # corre um loop para separar o tuple e devolver os valores em separado
+            LogConnect("DATA:{}:{}".format(self.diareq,dadostuple[i]), " {}".format(vezesreceb[i]),"{}".format(self.shareid)).interactlog()
+        LogConnect("DATA", "------ DATA END ------", "{}".format(self.shareid)).interactlog()
+
+    # PARA SEPARAR
+
+    def verlogs(self):
+        #janela logs
+        self.newWindow = tk.Tk()
+        self.newWindow.title("Logs")
+        self.newWindow.geometry("900x400")
+
+        self.log_table = ttk.Treeview(self.newWindow)
+        self.log_table['columns'] = ('logid','data', 'hora', 'tipo', 'mensagem','idrequested')
+        self.log_table.column("#0", width=0,  stretch=NO)
+        self.log_table.column("logid",anchor=CENTER, width=45)
+        self.log_table.column("data",anchor=CENTER, width=70)
+        self.log_table.column("hora",anchor=CENTER,width=70)
+        self.log_table.column("tipo",anchor=CENTER,width=170)
+        self.log_table.column("mensagem",anchor=CENTER,width=400)
+        self.log_table.column("idrequested",anchor=CENTER,width=95)
+
+        self.log_table.heading("#0",text='',anchor=CENTER)
+        self.log_table.heading("logid",text='logid',anchor=CENTER)
+        self.log_table.heading("data",text='Data',anchor=CENTER)
+        self.log_table.heading("hora",text='Hora',anchor=CENTER)
+        self.log_table.heading("tipo",text='Tipo',anchor=CENTER)
+        self.log_table.heading("mensagem",text='Mensagem',anchor=CENTER)
+        self.log_table.heading("idrequested",text='IDRequested',anchor=CENTER)
+
+        self.textBox=Entry(self.newWindow, width=60)
+        self.textBox.insert(INSERT, "Escreva o comando aqui... ou escreva 'help' para ajuda")
+        self.textBox.bind("<Button>", lambda event: self.textBox.delete(0, END))
+        self.textBox.bind("<Return>", self.retrieve_input)
+        self.textBox.pack(padx=10,pady=15, anchor="nw", fill="both")
+
+        scrollbar = ttk.Scrollbar(self.newWindow, orient='vertical', command=self.log_table.yview)
+        scrollbar.pack(pady='10',side='right', fill='y')
+        #  communicate back to the scrollbar
+
+        self.log_table['yscrollcommand'] = scrollbar.set
+        self.log_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+
+    def showlog(self):
+        row = session.query(logbase.__table__).all()
+        for class_instance in row:
+            in1 = self.log_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+        self.log_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+
+
+    def showhelp(self):
+        top = tk.Tk()
+        top.geometry("550x600")
+        top.title("Ajuda")
+        ajudlab = tk.Label(top, text="Manual de comandos", font=("Arial", 20), pady=10)
+        ajudlab.pack()
+        text_box = Text(top)
+        ajudtext = open("help.txt", "r").read()
+        text_box.pack(pady=10,padx=10,anchor='n',expand=True)
+        text_box.insert('end', ajudtext)
+        text_box.config(state='disabled')
+        top.mainloop()
+
+    def querymode(self, argrec):
+        if ".by" in argrec:
+            if ".idrequested=" in argrec:
+                getqueryid = argrec.split('=')
+                idconn = session.query(logbase.__table__).filter(logbase.idrequested==getqueryid[1]).all()
+                for class_instance in idconn:
+                    in1 = self.log_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+                self.log_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+            elif ".tipo=" in argrec:
+                getquerytype = argrec.split('=')
+                idconn = session.query(logbase.__table__).filter(logbase.tipo==getquerytype[1]).all()
+                for class_instance in idconn:
+                    in1 = self.log_table.insert(parent='',index='end',values=(class_instance[0],class_instance[1],class_instance[2],class_instance[3],class_instance[4],class_instance[5]))
+                self.log_table.pack(padx='10',pady='10',side='left',fill='both', expand=True)
+            else:
+                self.notifybox("E100")
+            if not idconn:
+                self.notifybox("E105")
+        else:
+            self.notifybox("E100")
+
+    def commandbox(self):
+        self.inputcomm = self.textBox.get()
+        print(self.inputcomm)
+        if self.inputcomm == "show":
+            for row in self.log_table.get_children():
+               self.log_table.delete(row)
+            self.showlog()
+
+        elif "query." in self.inputcomm:
+            for row in self.log_table.get_children():
+               self.log_table.delete(row)
+            self.querymode(self.inputcomm)
+
+        elif self.inputcomm == "help":
+            self.showhelp()
+
+        elif self.inputcomm == "clear":
+            LogConnect(None, None,None).cleanlogs()
+            for row in self.log_table.get_children():
+               self.log_table.delete(row)
+            self.showlog()
+            self.notifybox("E103")
+
+        else:
+            self.notifybox("E100")
+
+    def notifybox(self, notifycode):
+        if notifycode == "E100":
+            tk.messagebox.showerror("\nTerminal", "Erro sintaxe! Comando: '{}' não reconhecido! \
+            \nEscreva 'help' no prompt para ver uma lista de comandos.".format(self.inputcomm),parent=self.newWindow)
+        elif notifycode == "E101":
+            LogConnect("WARNING", "ID nº{} não tem credenciais na base de dados!".format(self.shareid),"root").interactlog()
+            messagebox.showerror("Logon", "Erro de login, ID nº{} não tem credenciais na DB!".format(self.shareid))
+        elif notifycode == "E102":
+            messagebox.showinfo("Logs", "Logs foram limpos!")
+        elif notifycode == "E103":
+            messagebox.showinfo("Logs - limpos", "Logs foram limpos!",parent=self.newWindow)
+        elif notifycode == "E104":
+            LogConnect("ERROR", "Tentou ligar sem acesso à rede!","root").interactlog()
+            messagebox.showerror("Internet conexão", "Erro, não foi detetada uma ligação à rede!")
+        elif notifycode == "E105":
+            LogConnect("ERROR", "DB retornou NULL","root").interactlog()
+            messagebox.showerror("Conexão à DB", "DB retornou NULL",parent=self.newWindow)
+        elif notifycode == "E106":
+            LogConnect("ERROR", "Dados inválidos!","root").interactlog()
+            messagebox.showerror("ERRO", "Dados inválidos")
+
+    def retrieve_input(self,event=None):
+         self.commandbox()
+         self.textBox.delete(0, END)
+
+    def passwdlogon(self):
+        self.passbox = Toplevel(self) # create an instance of toplevel
+        self.display_text = tk.StringVar()
+        display = tk.Label(self.passbox, textvariable=self.display_text)
+        display.pack()
+        self.passbox.title("Password prompt")
+        self.display_text.get()
+        settext = "Introduza a palavra passe:"
+        self.display_text.set(settext)
+        self.passwd = tk.Entry(self.passbox, show="*")  # Store as instance variable
+        self.passwd.bind("<Return>",lambda event: self.passverify())
+        self.passwd.pack(side='left')
+        # create widgets with toplevel instance as parent
+        but = Button(self.passbox, text='Enter', command=self.passverify).pack(side='right')
+
+    def passverify(self):
+        self.passwrec = self.passwd.get()
+        if self.passwrec == "1234":
+            self.passbox.destroy()
+            self.continueform()
+        else:
+            self.display_text.set("Password errada! Tente novamente")
+            self.passwd.delete(0, END)
+
+window = MyWindow()
+window.mainloop()
+
+                </code></pre>
             </div>
-            <br class="space0">
+            <br class="space40">
             <div class="text">
 
             </div>
