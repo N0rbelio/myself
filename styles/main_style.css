@@ -156,6 +156,13 @@ header {
     text-decoration: underline;
 }
 
+#code_404 h1 {
+    font-size: 2rem;
+    text-align: center;
+    margin-left: 50%;
+    margin-right: 50%;
+}
+
 /* Phones */
 @media screen and (max-width: 883px) {
     #pirsi {
@@ -170,4 +177,13 @@ header {
     #pirsi h2 {
         font-size: 1.3rem;
     }
+
+    #code_404 h1 {
+        font-size: 1.6rem;
+        text-align: center;
+        margin-left: 50%;
+        margin-right: 50%;
+    }
 }
+
+
