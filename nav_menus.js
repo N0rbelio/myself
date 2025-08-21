@@ -111,23 +111,18 @@ langSelect.addEventListener('change', async () => {
 (async function checkInvalidLangPage() {
   const path = window.location.pathname;
 
-  // Only check when inside /en/ or /pt/
-  if (path.startsWith(`${basePath}/en/`) || path.startsWith(`${basePath}/pt/`)) {
+
+  if (path.endsWith("/404.html")) return;
+
+  if (path.startsWith("/myself/en/") || path.startsWith("/myself/pt/")) {
     try {
       const res = await fetch(path, { method: "HEAD" });
+
       if (!res.ok) {
-        if (path.startsWith(`${basePath}/en/`)) {
-          window.location.replace(`${basePath}/en/404.html`);
-        } else {
-          window.location.replace(`${basePath}/404.html`); // PT version
-        }
+        window.location.replace("/myself/404.html");
       }
     } catch (e) {
-      if (path.startsWith(`${basePath}/en/`)) {
-        window.location.replace(`${basePath}/en/404.html`);
-      } else {
-        window.location.replace(`${basePath}/404.html`);
-      }
+      window.location.replace("/myself/404.html");
     }
   }
 })();
