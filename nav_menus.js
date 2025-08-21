@@ -65,6 +65,34 @@ const basePath = window.location.pathname.split('/')[1]
 })();
 
 
+
+
+langSelect.addEventListener('change', async () => {
+  const selected = langSelect.value;
+  const currentPath = window.location.pathname; 
+  let targetPath;
+
+  if (selected === 'en') {
+    if (!currentPath.startsWith(`${basePath}/en/`)) {
+      targetPath = `${basePath}/en` + currentPath.replace(basePath, '');
+      try {
+        const res = await fetch(targetPath, { method: 'HEAD' });
+        if (!res.ok) throw new Error('Page not found');
+        window.location.pathname = targetPath;
+      } catch {
+        window.location.pathname = `${basePath}/404.html`;
+      }
+    }
+  } else if (selected === 'pt') {
+    if (currentPath.startsWith(`${basePath}/en/`)) {
+      targetPath = currentPath.replace(`${basePath}/en`, basePath);
+      window.location.pathname = targetPath || `${basePath}/index.html`;
+    }
+  }
+});
+
+/*
+
 langSelect.addEventListener('change', () => {
   const selected = langSelect.value;
   const currentPath = window.location.pathname; 
@@ -100,3 +128,4 @@ if (document.body.classList.contains('page-404') &&
     window.location.pathname.startsWith(`${basePath}/en/`)) {
   window.location.replace(`${basePath}/404.html`);
 }
+  */
