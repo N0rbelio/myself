@@ -91,7 +91,7 @@ langSelect.addEventListener('change', async () => {
   }
 });
 
-/*(async function checkInvalidLangPage() {
+(async function checkInvalidLangPage() {
   const path = window.location.pathname;
 
   // Only check when inside /en/ or /pt/
@@ -103,26 +103,6 @@ langSelect.addEventListener('change', async () => {
       }
     } catch (e) {
       window.location.replace(`${basePath}/404.html`);
-    }
-  }
-})();
-*/
-
-(async function checkInvalidLangPage() {
-  const path = window.location.pathname;
-
-
-  if (path.endsWith("/404.html")) return;
-
-  if (path.startsWith("/myself/en/") || path.startsWith("/myself/pt/")) {
-    try {
-      const res = await fetch(path, { method: "HEAD" });
-
-      if (!res.ok) {
-        window.location.replace("/myself/404.html");
-      }
-    } catch (e) {
-      window.location.replace("/myself/404.html");
     }
   }
 })();
