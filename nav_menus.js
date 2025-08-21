@@ -93,6 +93,9 @@ langSelect.addEventListener('change', async () => {
 
 (async function checkInvalidLangPage() {
   const path = window.location.pathname;
+  const basePath = window.location.pathname.split('/')[1]
+    ? `/${window.location.pathname.split('/')[1]}`
+    : '';
 
   // Only check when inside /en/ or /pt/
   if (path.startsWith(`${basePath}/en/`) || path.startsWith(`${basePath}/pt/`)) {
@@ -108,41 +111,4 @@ langSelect.addEventListener('change', async () => {
 })();
 
 
-/*
 
-langSelect.addEventListener('change', () => {
-  const selected = langSelect.value;
-  const currentPath = window.location.pathname; 
-
-  if (selected === 'en') {
-    if (!currentPath.startsWith(`${basePath}/en/`)) {
-      if (
-        currentPath === `${basePath}/` ||
-        currentPath === `${basePath}/index.html`
-      ) {
-        window.location.pathname = `${basePath}/en/index.html`;
-      } else {
-        window.location.pathname =
-          `${basePath}/en` + currentPath.replace(basePath, '');
-      }
-    }
-  } else if (selected === 'pt') {
-    if (currentPath.startsWith(`${basePath}/en/`)) {
-      let newPath = currentPath.replace(`${basePath}/en`, basePath);
-
-      if (newPath === `${basePath}/`) {
-        window.location.pathname = newPath;
-      } else {
-        window.location.pathname = newPath || `${basePath}/index.html`;
-      }
-    } else {
-      window.location.pathname = currentPath;
-    }
-  }
-});
-
-if (document.body.classList.contains('page-404') &&
-    window.location.pathname.startsWith(`${basePath}/en/`)) {
-  window.location.replace(`${basePath}/404.html`);
-}
-  */
