@@ -98,5 +98,5 @@ langSelect.addEventListener('change', () => {
 
 if (document.body.classList.contains('page-404') &&
     window.location.pathname.startsWith(`${basePath}/en/`)) {
-  window.location.href = `${basePath}/404.html`;
+  window.location.replace(`${basePath}/404.html`);
 }
