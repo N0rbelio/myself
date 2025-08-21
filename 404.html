@@ -78,5 +78,10 @@
 
         <script src="age_calc.js"></script>
         <script src="nav_menus.js"></script>
+        <script>
+            if (window.location.pathname.startsWith("/myself/en/")) {
+                window.location.replace("/myself/404.html");
+            }
+        </script>
 </body>
 </html>
