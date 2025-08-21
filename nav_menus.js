@@ -91,6 +91,23 @@ langSelect.addEventListener('change', async () => {
   }
 });
 
+(async function checkInvalidLangPage() {
+  const path = window.location.pathname;
+
+  // Only check when inside /en/ or /pt/
+  if (path.startsWith(`${basePath}/en/`) || path.startsWith(`${basePath}/pt/`)) {
+    try {
+      const res = await fetch(path, { method: "HEAD" });
+      if (!res.ok) {
+        window.location.replace(`${basePath}/404.html`);
+      }
+    } catch (e) {
+      window.location.replace(`${basePath}/404.html`);
+    }
+  }
+})();
+
+
 /*
 
 langSelect.addEventListener('change', () => {
