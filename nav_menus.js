@@ -96,3 +96,7 @@ langSelect.addEventListener('change', () => {
   }
 });
 
+if (window.location.pathname.startsWith(`${basePath}/en/`) &&
+    window.location.pathname.endsWith("404.html")) {
+  window.location.href = `${basePath}/404.html`;
+}
