@@ -159,8 +159,6 @@ header {
 #code_404 h1 {
     font-size: 2rem;
     text-align: center;
-    margin-left: 50%;
-    margin-right: 50%;
 }
 
 /* Phones */
@@ -181,8 +179,6 @@ header {
     #code_404 h1 {
         font-size: 1.6rem;
         text-align: center;
-        margin-left: 50%;
-        margin-right: 50%;
     }
 }
 
