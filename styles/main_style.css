@@ -82,7 +82,13 @@ header {
     .column_background_main {
         margin: 0;
     }
-
+    .text {
+        margin-top: 60px;
+        margin-right: 20px;
+        margin-left: 20px;
+        margin-bottom: 30px;
+        padding: 19px;
+    }/*
     .text {
         margin-top: 60px;
         margin-right: 0px;
@@ -90,7 +96,7 @@ header {
         margin-bottom: 30px;
         padding: 3px;
     }
-
+*/
     .container_big {
         margin-left: 4%;
         margin-right: 4%;
